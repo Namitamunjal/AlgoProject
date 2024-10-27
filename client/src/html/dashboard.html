@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../index.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Hanuman", serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .chart-box {
+      background-color: #E0F7FA;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class='flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50'>
+    <img src="../assets/images/logo.png" alt="logo" class="h-12" />
+
+    <ul class="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
+      <li>
+        <a href="./index.html">Home</a>
+      </li>
+      <li>|</li>
+      <li><a href="./dashboard.html"><u>Dashboard</u> </a> </li>
+      <li> |</li>
+      <li> <a href="./profile.html">Profile</a> </li>
+      <li> |</li>
+      <li><a href="./alerts.html">Alerts</a> </li>
+      <li> |</li>
+      <li> <a href="./settings.html">Settings</a> </li>
+      <li> |</li>
+      <li> <a href="./login.html">Login</a> </li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="flex">
+    <div class="w-60 h-screen bg-green-50 fixed top-0 left-0 border-r-4 shadow-xl">
+      <div class="mt-24">
+        <!-- Margin to push content below header -->
+        <ul class="space-y-4">
+          <li class="p-4 shadow-xl hover:bg-green-100 cursor-pointer">Overview</li>
+          <li class="p-4 shadow-xl hover:bg-green-100 cursor-pointer">Energy Usage</li>
+          <li class="p-4 shadow-xl hover:bg-green-100 cursor-pointer">Carbon Offset</li>
+          <li class="p-4 shadow-xl hover:bg-green-100 cursor-pointer">Alerts</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 w-full p-10">
+      <h1 class="text-4xl text-[#2D6A4F] font-bold mb-4 mt-20"> Dashboard</h1>
+      <h2 class="text-2xl font-bold mb-6">Real-Time Data Overview</h2>
+
+      <!-- Energy Consumption Section -->
+      <div class="mb-10">
+        <p class="text-xl font-semibold text-[#1C767C] mb-4">• Energy Consumption (Last 30 Days)</p>
+        <div class="bg-[#EDF7ED] p-6 rounded-xl shadow-lg">
+          <canvas id="energyChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Carbon Offset Section -->
+      <div class="mb-10">
+        <p class="text-xl font-semibold text-[#1C767C] mb-4">• Carbon Offset (Last 30 Days)</p>
+        <div class="bg-[#E0F7FA] p-6 rounded-xl shadow-lg">
+          <canvas id="carbonOffsetChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Energy Efficiency Credit Score (Pie Chart) -->
+      <div class="mb-10">
+        <p class="text-xl font-semibold text-[#1C767C] mb-4">• Energy Efficiency Credit Score</p>
+        <div class="chart-container">
+          <div class="chart-box">
+            <canvas id="efficiencyPieChart"></canvas>
+            <p class="text-lg font-semibold text-[#1C767C] mt-4">75/100</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Alerts Section -->
+      <h2 class="text-2xl font-bold mb-6">Recent Alerts</h2>
+      <div class="bg-[#E0F7FA] p-6 rounded-xl shadow-lg">
+        <table class="w-full text-center border-collapse border border-blue-500">
+          <thead>
+            <tr class="bg-[#EDF7ED]">
+              <th class="border border-blue-500 p-2">Date</th>
+              
+              <th class="border border-blue-500 p-2">Issue</th>
+              <th class="border border-blue-500 p-2">Action Required</th>
+              <th class="border border-blue-500 p-2">Resolution</th>
+            </tr>
+          </thead>
+          <tbody >
+            <tr>
+              <td class="p-4">1</td>
+              <td>1</td>
+              <td>1</td>
+              <td>1</td>
+            </tr>
+            <!-- Data can be added dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  
+  <footer class="bg-[#D5E7FF] text-gray-700 p-5 ">
+    <div class="container flex justify-between items-center">
+      <!-- Left: Footer Links -->
+      <ul class="space-y-2 text-left  mx-10 pl-60">
+        <li><a href="#" class="hover:underline">About</a></li>
+        <li><a href="#" class="hover:underline">Contact Us</a></li>
+        <li><a href="#" class="hover:underline">Privacy Policy</a></li>
+        <li><a href="#" class="hover:underline">Terms Conditions</a></li>
+      </ul>
+
+      <!-- Right: Copyright Text -->
+      <p class="text-center text-gray-500 text-sm">
+        &copy; 2024 Energy Credit & Carbon Offset Tracking. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Energy Consumption Chart (Line Chart)
+    const ctxEnergy = document.getElementById('energyChart').getContext('2d');
+    const energyChart = new Chart(ctxEnergy, {
+      type: 'line',
+      data: {
+        labels: ['Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
+        datasets: [{
+          label: 'Electrical Energy Consumption (kWh)',
+          data: [80, 60, 90, 85, 95, 170],
+          backgroundColor: 'rgba(28, 118, 124, 0.1)',
+          borderColor: '#1C767C',
+          borderWidth: 2,
+          fill: true,
+          pointBackgroundColor: '#1C767C',
+          pointBorderColor: '#1C767C',
+          pointRadius: 5,
+          pointHoverRadius: 7
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Days'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Electrical Energy Consumption (kWh)'
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Carbon Offset Bar Chart
+    const ctxCarbonOffset = document.getElementById('carbonOffsetChart').getContext('2d');
+    const carbonOffsetChart = new Chart(ctxCarbonOffset, {
+      type: 'bar',
+      data: {
+        labels: ['5', '10', '15', '20', '25', '30'],
+        datasets: [{
+          label: 'Tons of CO₂ offset',
+          data: [20, 35, 45, 30, 40, 50],
+          backgroundColor: 'rgba(140, 167, 255, 0.5)',
+          borderColor: 'rgba(140, 167, 255, 1)',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Time (Days)',
+              color: '#6B7280',
+              font: {
+                size: 14
+              }
+            },
+            grid: {
+              display: false
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Tons of CO₂ offset',
+              color: '#6B7280',
+              font: {
+                size: 14
+              }
+            },
+            beginAtZero: true,
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Energy Efficiency Credit Score (Pie Chart)
+    const ctxEfficiencyPie = document.getElementById('efficiencyPieChart').getContext('2d');
+    const efficiencyPieChart = new Chart(ctxEfficiencyPie, {
+      type: 'pie',
+      data: {
+        labels: ['Used', 'Remaining'],
+        datasets: [{
+          data: [75, 25],
+          backgroundColor: ['#008000', '#b22222'], // Green and light green for the pie chart
+          borderWidth: 0,
+          borderColor: ['#']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>

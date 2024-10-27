@@ -1,0 +1,84 @@
+import { useState } from 'react'; 
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import './ResetPassword.css';
+
+const ResetPassword = () => {
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const { id, token } = useParams();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Clear previous messages
+        setError('');
+        setSuccess('');
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:5000/reset-password/${id}/${token}`, { password });
+            console.log('Response:', response.data);
+            setSuccess('Password reset successful. Redirecting to login...');
+
+            setTimeout(() => {
+                navigate('/login');
+            }, 1000);
+        } catch (err) {
+            console.error("Error occurred:", err);
+            setError(err.response?.data?.message || 'Failed to reset password');
+        }
+    };
+
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Reset Password</h2>
+                
+                {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+                {success && <p className="text-green-600 text-center mb-4">{success}</p>}
+                
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-gray-600 mb-2">New Password:</label>
+                        <input
+                            type="password"
+                            placeholder="Enter New Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-600 mb-2">Confirm Password:</label>
+                        <input
+                            type="password"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-indigo-600 text-white py-2 rounded-md font-semibold hover:bg-indigo-700 transition"
+                    >
+                        Reset Password
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default ResetPassword;
