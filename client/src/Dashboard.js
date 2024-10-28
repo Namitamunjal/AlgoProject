@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import Chart from 'chart.js/auto'; 
+import Chart from 'chart.js/auto';
 import './index.css'; // Importing the stylesheet
 
 import logo from "./assets/images/logo.png";
 
 function Dashboard() {
+  
   useEffect(() => {
     // Create chart instances
     const ctxEnergy = document.getElementById('energyChart').getContext('2d');
@@ -56,11 +57,11 @@ function Dashboard() {
         responsive: true,
         scales: {
           x: {
-            title: { display: true, text: 'Time (Days)', color: '#6B7280', font: { size: 14 }},
+            title: { display: true, text: 'Time (Days)', color: '#6B7280', font: { size: 14 } },
             grid: { display: false }
           },
           y: {
-            title: { display: true, text: 'Tons of CO₂ offset', color: '#6B7280', font: { size: 14 }},
+            title: { display: true, text: 'Tons of CO₂ offset', color: '#6B7280', font: { size: 14 } },
             beginAtZero: true,
             grid: { display: false }
           }
@@ -87,6 +88,7 @@ function Dashboard() {
       }
     });
 
+    
     // Cleanup function to destroy charts on unmount
     return () => {
       energyChart.destroy();
@@ -101,17 +103,17 @@ function Dashboard() {
       <nav className='flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50'>
         <img src={logo} alt="logo" className="h-12" />
         <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><a href="./index.html">Home</a></li>
+          <li><a href="./home">Home</a></li>
           <li>|</li>
-          <li><a href="./dashboard.html"><u>Dashboard</u></a></li>
+          <li><a href="./dashboard"><u>Dashboard</u></a></li>
           <li>|</li>
-          <li><a href="./profile.html">Profile</a></li>
+          <li><a href="./profile">Profile</a></li>
           <li>|</li>
-          <li><a href="#">Alerts</a></li>
+          <li><a href="./alerts">Alerts</a></li>
           <li>|</li>
-          <li><a href="#">Settings</a></li>
+          <li><a href="./settings">Settings</a></li>
           <li>|</li>
-          <li><a href="#">Login</a></li>
+          <li><a href="./login">Login</a></li>
         </ul>
       </nav>
 
@@ -152,16 +154,19 @@ function Dashboard() {
           {/* Energy Efficiency Credit Score */}
           <div className="mb-10">
             <p className="text-xl font-semibold text-[#1C767C] mb-4">• Energy Efficiency Credit Score</p>
-            <div className="chart-container">
+
+            {/* Responsive chart-container */}
+            <div className="chart-container flex flex-col justify-center items-center mx-auto h-64 w-64 md:h-80 md:w-80 lg:h-96 lg:w-96">
               <div className="chart-box">
                 <canvas id="efficiencyPieChart"></canvas>
-                <p className="text-lg font-semibold text-[#1C767C] mt-4">75/100</p>
+                <p className="text-lg font-semibold text-[#1C767C] mt-4 text-center">75/100</p>
               </div>
             </div>
           </div>
 
+
           {/* Recent Alerts Section */}
-          <h2 className="text-2xl font-bold mb-6">Recent Alerts</h2>
+          <h2 className="text-2xl font-bold mb-6 mt-10 ">Recent Alerts</h2>
           <div className="bg-[#E0F7FA] p-6 rounded-xl shadow-lg">
             <table className="w-full text-center border-collapse border border-blue-500">
               <thead>
@@ -185,11 +190,13 @@ function Dashboard() {
         </div>
       </div>
 
+      
+
       {/* Footer */}
       <footer className="bg-[#D5E7FF] text-gray-700 p-5">
         <div className="container flex justify-between items-center">
           <ul className="space-y-2 text-left mx-10 pl-60">
-            <li><a href="#" className="hover:underline">About</a></li>
+            <li><a href="./about" className="hover:underline">About</a></li>
             <li><a href="#" className="hover:underline">Contact Us</a></li>
             <li><a href="#" className="hover:underline">Privacy Policy</a></li>
             <li><a href="#" className="hover:underline">Terms Conditions</a></li>

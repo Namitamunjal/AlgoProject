@@ -39,7 +39,7 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-bl from-green-500 to-yellow-50">
             <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Reset Password</h2>
                 
@@ -55,7 +55,7 @@ const ResetPassword = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
                         />
                     </div>
                     <div>
@@ -66,12 +66,12 @@ const ResetPassword = () => {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-indigo-600 text-white py-2 rounded-md font-semibold hover:bg-indigo-700 transition"
+                        className="w-full bg-green-600 text-white py-2 rounded-md font-semibold hover:bg-green-700 transition"
                     >
                         Reset Password
                     </button>

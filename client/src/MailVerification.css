@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap');
 * {
   font-family: "Open Sans", sans-serif;
   box-sizing: border-box;
 }
 
-/* Logo container */
+/* Logo container 
 .logo-container {
     display: flex;
     align-items: center;
@@ -236,4 +236,4 @@
       top: 10px; 
       left: 10px;
     }
-}
+} */

@@ -40,29 +40,29 @@ function Home() {
           <img src={logo} alt="logo" className="h-12" />
           <ul className="flex justify-end px-5 size-full font-medium space-x-8 mx-10 text-lg">
             <li>
-              <a href="#">
+              <a href="./home">
                 <u>Home</u>
               </a>
             </li>
             <li>|</li>
             <li>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to="./Dashboard">Dashboard</Link>
             </li>
             <li>|</li>
             <li>
-              <a href="#">Profile</a>
+              <a href="./profile">Profile</a>
             </li>
             <li>|</li>
             <li>
-              <a href="#">Alerts</a>
+              <a href="./alerts">Alerts</a>
             </li>
             <li>|</li>
             <li>
-              <a href="#">Settings</a>
+              <a href="./settings">Settings</a>
             </li>
             <li>|</li>
             <li>
-              <a href="#">Login</a>
+              <a href="./login">Login</a>
             </li>
           </ul>
         </nav>
@@ -79,7 +79,7 @@ function Home() {
             </p>
 
             <button className="bg-green-800 p-3 rounded-2xl shadow-xl text-white font-bold mt-5 px-10 py-5 hover:bg-gradient-to-r hover:from-green-500">
-              Get Started &gt;&gt;&gt;
+              <a href="#direct"> Get Started &gt;&gt;&gt;</a>
             </button>
           </div>
           <br />
@@ -93,7 +93,7 @@ function Home() {
         </div>
 
         {/* Quick stats section */}
-        <div className="p-10 py-5 bg-yellow-50 shadow-xl">
+        <div className="p-10 py-5 bg-yellow-50 shadow-xl" id='direct'>
           <h1 className="text-green-800 text-5xl font-extrabold my-10 pt-10 ml-10">Quick Stats...</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 place-items-center">
@@ -159,12 +159,12 @@ function Home() {
         </div>
 
         {/* Footer */}
-        <footer className="bg-[#D5E7FF] text-gray-700 p-5">
+        <footer className="bg-[#D5E7FF] text-gray-700 p-5 ">
           <div className="container flex justify-between items-center">
             {/* Left: Footer Links */}
             <ul className="space-y-2 text-left mx-10">
               <li>
-                <a href="#" className="hover:underline">
+                <a href="./about" className="hover:underline">
                   About
                 </a>
               </li>
