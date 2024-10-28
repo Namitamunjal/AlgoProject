@@ -28,7 +28,7 @@ function Login() {
 
       setSuccess('Login successful! Redirecting...');
       setError('');
-      navigate('/main');
+      navigate('/home');
       setEmail('');
       setPassword('');
 

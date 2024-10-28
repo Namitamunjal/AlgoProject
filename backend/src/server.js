@@ -14,7 +14,7 @@ const PORT = 5000;
 
 // CORS settings
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3001',
   methods: ['GET', 'POST'],
   credentials: true,
 }));

@@ -46,23 +46,23 @@ function Home() {
             </li>
             <li>|</li>
             <li>
-              <Link to="./Dashboard">Dashboard</Link>
+              <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>|</li>
             <li>
-              <a href="./profile">Profile</a>
+              <a href="/profile">Profile</a>
             </li>
             <li>|</li>
             <li>
-              <a href="./alerts">Alerts</a>
+              <a href="/alerts">Alerts</a>
             </li>
             <li>|</li>
             <li>
-              <a href="./settings">Settings</a>
+              <a href="/settings">Settings</a>
             </li>
             <li>|</li>
             <li>
-              <a href="./login">Login</a>
+              <a href="/login">Login</a>
             </li>
           </ul>
         </nav>

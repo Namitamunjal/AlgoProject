@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const RegisterModel = require('../models/model');
+const DataModel = require('../models/energy_data');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -221,4 +222,13 @@ module.exports.passwordReset = async (req, res) => {
             res.json({ status: error.message || "An error occurred" });
         }
     });
+};
+
+module.exports.data = async (req, res) => {
+    try {
+      const data = await DataModel.find().sort({ date: -1 }).limit(30); // Fetch last 30 records
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
 };
