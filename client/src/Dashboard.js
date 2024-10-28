@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import './index.css'; // Importing the stylesheet
-
+import { useThreshold } from './thresholdcontext';
 import logo from "./assets/images/logo.png";
-
-const THRESHOLD = 30; // Set the threshold for energy efficiency
+import { Link } from 'react-router-dom';
 
 function Dashboard() {
-  
+  const { threshold } = useThreshold();
+  const THRESHOLD = threshold; // Set the threshold for energy efficiency [50 for now]
   useEffect(() => {
     // Create chart instances
     const ctxEnergy = document.getElementById('energyChart').getContext('2d');
@@ -162,17 +162,17 @@ function Dashboard() {
       <nav className='flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50'>
         <img src={logo} alt="logo" className="h-12" />
         <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><a href="./home">Home</a></li>
+          <li><Link to="/home">Home</Link></li>
           <li>|</li>
-          <li><a href="./dashboard"><u>Dashboard</u></a></li>
+          <li><Link to="/dashboard"><u>Dashboard</u></Link></li>
           <li>|</li>
-          <li><a href="./profile">Profile</a></li>
+          <li><Link to="/profile">Profile</Link></li>
           <li>|</li>
-          <li><a href="./alerts">Alerts</a></li>
+          <li><Link to="/alerts">Alerts</Link></li>
           <li>|</li>
-          <li><a href="./settings">Settings</a></li>
+          <li><Link to="/settings">Settings</Link></li>
           <li>|</li>
-          <li><a href="./login">Login</a></li>
+          <li><Link to="/login">Login</Link></li>
         </ul>
       </nav>
 
