@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useThreshold } from './thresholdcontext';
 import { Link } from 'react-router-dom';
+import logo from './assets/images/logo.png';
 
-const normalConsumption = 70;
+const normalConsumption = 500;
 
 function Profile() {
   // States for each box visibility
@@ -31,7 +32,7 @@ function Profile() {
   };
 
   // Fetch data from the server
-  const { threshold } = useThreshold();
+  const { energyThreshold } = useThreshold();
   const [efficientDays, setEfficientDays] = useState([]);
   const [majorAlerts, setMajorAlerts] = useState([]);
 
@@ -40,13 +41,18 @@ function Profile() {
     try {
       const response = await axios.get('http://localhost:5000/api/data/all-data');
       const allData = response.data;
+      console.log(allData);
+
+      // Sort all data by date in descending order (latest dates first)
+      allData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
       // Filter efficient days above the threshold
-      const efficient = allData.filter(item => item.efficiencyScore >= threshold);
+      const efficient = allData.filter(item => item.energyConsumption <= energyThreshold);  //energyconsumption threshold value
       setEfficientDays(efficient);
 
-      // Filter major alerts below the threshold
-      const alerts = allData.filter(item => item.efficiencyScore < threshold);
+      // Filter major alerts where actionRequired is either "Shut down non-essential systems." or "Initiate efficiency improvement measures."
+      const majorAlertConditions = ["Shut down non-essential systems.", "Initiate efficiency improvement measures."];
+      const alerts = allData.filter(item => majorAlertConditions.includes(item.actionRequired));
       setMajorAlerts(alerts);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -64,12 +70,12 @@ function Profile() {
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [threshold]);
+  }, [energyThreshold]);
   return (
     <div>
       {/* Navigation Bar */}
       <nav className="flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50">
-        <img src="./images/logo.png" alt="logo" className="h-12" />
+        <img src={logo} alt="logo" className="h-12" />
         <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
           <li><Link to="/home">Home</Link></li>
           <li>|</li>

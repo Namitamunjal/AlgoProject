@@ -9,6 +9,7 @@ import ResetPassword from './ResetPassword';
 import About from './About';
 import Hero from './Hero';
 import Profile from './Profile';
+import Alerts from './Alerts';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/alerts" element={<Alerts />} />
         <Route path="/mail-verification" element={<MailVerification />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

@@ -40,9 +40,9 @@ function Home() {
           <img src={logo} alt="logo" className="h-12" />
           <ul className="flex justify-end px-5 size-full font-medium space-x-8 mx-10 text-lg">
             <li>
-              <a href="./home">
+              <Link to="/home">
                 <u>Home</u>
-              </a>
+              </Link>
             </li>
             <li>|</li>
             <li>
@@ -50,19 +50,19 @@ function Home() {
             </li>
             <li>|</li>
             <li>
-              <a href="/profile">Profile</a>
+              <Link to="/profile">Profile</Link>
             </li>
             <li>|</li>
             <li>
-              <a href="/alerts">Alerts</a>
+              <Link to="/alerts">Alerts</Link>
             </li>
             <li>|</li>
             <li>
-              <a href="/settings">Settings</a>
+              <Link to="/settings">Settings</Link>
             </li>
             <li>|</li>
             <li>
-              <a href="/login">Login</a>
+              <Link to="/login">Login</Link>
             </li>
           </ul>
         </nav>

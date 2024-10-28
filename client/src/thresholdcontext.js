@@ -4,15 +4,26 @@ import React, { createContext, useContext, useState } from 'react';
 const ThresholdContext = createContext();
 
 export const ThresholdProvider = ({ children }) => {
-  const [threshold, setThreshold] = useState(50); // Initial threshold value
+  // Initial thresholds
+  const [energyThreshold, setEnergyThreshold] = useState(500); // Initial energy threshold value
+  const [efficiencyThreshold, setEfficiencyThreshold] = useState(1); // Initial efficiency threshold value
 
-  // Function to update the threshold
-  const updateThreshold = (newThreshold) => {
-    setThreshold(newThreshold);
+  // Function to update the energy threshold
+  const updateEnergyThreshold = (newThreshold) => {
+    setEnergyThreshold(newThreshold);
+  };
+
+  // Function to update the efficiency threshold
+  const updateEfficiencyThreshold = (newThreshold) => {
+    setEfficiencyThreshold(newThreshold);
   };
 
   return (
-    <ThresholdContext.Provider value={{ threshold, updateThreshold }}>
+    <ThresholdContext.Provider value={{ 
+      energyThreshold,
+      updateEnergyThreshold,
+      efficiencyThreshold,
+      updateEfficiencyThreshold, }}>
       {children}
     </ThresholdContext.Provider>
   );

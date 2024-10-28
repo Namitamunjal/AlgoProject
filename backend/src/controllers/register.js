@@ -224,6 +224,18 @@ module.exports.passwordReset = async (req, res) => {
     });
 };
 
+// single latest data
+module.exports.latest_data = async (req, res) => {
+    try {
+        const latestEntry = await DataModel.findOne().sort({ date: -1 }); // Sort by date descending and get the latest
+        if (!latestEntry) return res.status(404).json({ message: 'No entries found' });
+        res.json(latestEntry);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//data of 30 entries only
 module.exports.data = async (req, res) => {
     try {
       const data = await DataModel.find().sort({ date: -1 }).limit(30); // Fetch last 30 records
@@ -233,6 +245,7 @@ module.exports.data = async (req, res) => {
     }
 };
 
+//all data
 module.exports.all_data = async (req, res) => {
     try {
       const data = await DataModel.find({});
@@ -242,3 +255,29 @@ module.exports.all_data = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   };
+
+  // Get all alerts
+module.exports.alerts = async (req, res) => {
+    try {
+        const alerts = await DataModel.find({ efficiencyScore: { $gt: 1 } }); // Fetch alerts above threshold
+        res.json(alerts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Update alert resolution
+module.exports.alert_id = async (req, res) => {
+    try {
+        const alert = await DataModel.findById(req.params.id);
+        if (!alert) return res.status(404).json({ message: 'Alert not found' });
+
+        alert.resolution = req.body.resolution;
+        alert.actionRequired = req.body.actionRequired; // If you want to track actions taken
+        await alert.save();
+        console.log('Alert updated:', alert);
+        res.json(alert);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

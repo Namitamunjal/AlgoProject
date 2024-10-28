@@ -6,8 +6,8 @@ import logo from "./assets/images/logo.png";
 import { Link } from 'react-router-dom';
 
 function Dashboard() {
-  const { threshold } = useThreshold();
-  const THRESHOLD = threshold; // Set the threshold for energy efficiency [50 for now]
+  const { efficiencyThreshold } = useThreshold();
+  const THRESHOLD = efficiencyThreshold; // Set the threshold for energy efficiency [1 for now if >1 then bad else good]
   useEffect(() => {
     // Create chart instances
     const ctxEnergy = document.getElementById('energyChart').getContext('2d');
@@ -75,10 +75,10 @@ function Dashboard() {
     const efficiencyPieChart = new Chart(ctxEfficiencyPie, {
       type: 'pie',
       data: {
-        labels: ['Good Days', 'Bad Days'],
+        labels: ['Bad Days', 'Good Days'],
         datasets: [{
           data: [0, 0],
-          backgroundColor: ['#008000', '#b22222'],
+          backgroundColor: ['#b22222', '#008000'],
           borderWidth: 0
         }]
       },
@@ -131,13 +131,22 @@ function Dashboard() {
       const alertsTable = document.querySelector('table tbody');
       alertsTable.innerHTML = ''; // Clear previous entries
       
-      data.forEach(alert => {
+      // Define the efficiency threshold
+      const efficiencyThreshold = THRESHOLD;
+
+      // Filter alerts based on conditions
+      const filteredAlerts = data.filter(alert => 
+        alert.efficiencyScore >= efficiencyThreshold && alert.actionRequired !== 'Marked as resolved'
+      )
+      .slice(0, 3); // Limit to top 3 alerts
+
+      filteredAlerts.forEach(alert => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${new Date(alert.date).toLocaleDateString()}</td>
           <td>${alert.alert}</td>
           <td>${alert.actionRequired || 'N/A'}</td>
-          <td>${alert.resolution || 'N/A'}</td>
+          <td>${alert.resolution || 'Pending'}</td>
         `;
         alertsTable.appendChild(row);
       });
@@ -238,6 +247,16 @@ function Dashboard() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200"></tbody>
             </table>
+            
+            {/* "Show All" Button */}
+            <div className="text-left mt-4">
+              <Link 
+                to="/alerts" 
+                className="inline-block px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                Show All
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ const MailVerification = () => {
   const handleSendOtp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/send-otp', { email });
+      const response = await axios.post('http://localhost:5000/send-otp', { email });
       console.log('OTP sent successfully:', response.data);
       setSuccess(response.data.message);
       setError('');
