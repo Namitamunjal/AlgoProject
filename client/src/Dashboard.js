@@ -4,8 +4,9 @@ import './index.css'; // Importing the stylesheet
 import { useThreshold } from './thresholdcontext';
 import logo from "./assets/images/logo.png";
 import { Link } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
 
-function Dashboard() {
+function Dashboard({ isAuthenticated, setIsAuthenticated }) {
   const { efficiencyThreshold } = useThreshold();
   const THRESHOLD = efficiencyThreshold; // Set the threshold for energy efficiency [1 for now if >1 then bad else good]
   useEffect(() => {
@@ -168,22 +169,7 @@ function Dashboard() {
   return (
     <div>
       {/* Navigation Bar */}
-      <nav className='flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50'>
-        <img src={logo} alt="logo" className="h-12" />
-        <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><Link to="/home">Home</Link></li>
-          <li>|</li>
-          <li><Link to="/dashboard"><u>Dashboard</u></Link></li>
-          <li>|</li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li>|</li>
-          <li><Link to="/alerts">Alerts</Link></li>
-          <li>|</li>
-          <li><Link to="/settings">Settings</Link></li>
-          <li>|</li>
-          <li><Link to="/login">Login</Link></li>
-        </ul>
-      </nav>
+      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
       {/* Sidebar */}
       <div className="flex">

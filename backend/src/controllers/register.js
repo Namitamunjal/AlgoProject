@@ -29,6 +29,26 @@ module.exports.signup =  async (req, res) => {
     }
 };
 
+module.exports.auth_check = (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    try {
+        jwt.verify(token, JWT_SECRET);
+        res.status(200).json({ isAuthenticated: true });
+    } catch (err) {
+        res.status(401).json({ message: "Invalid token" });
+    }
+};
+
+module.exports.logout = (req, res) => {
+    res.clearCookie("token", { path: '/' }); // Ensure the path matches the one used when setting the cookie
+    res.status(200).json({ message: 'Logged out successfully' });
+};
+
 module.exports.signin = async (req, res) => {
     const { email, password } = req.body;
 
@@ -50,14 +70,15 @@ module.exports.signin = async (req, res) => {
         const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "10d" });
 
        
+         // Set the cookie and send the response
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, 
-            sameSite: 'strict', 
-            maxAge: 10 * 24 * 60 * 60 * 1000
-
+            secure: false, // Use false for localhost
+            sameSite: 'lax', // Lax provides better usability while still being reasonably secure
+            maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
         });
-        res.status(200).json({ message: "Login successful" });
+        
+        res.status(200).json({ message: "Login successful", token });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Internal Server Error" });

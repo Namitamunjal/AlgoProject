@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useThreshold } from './thresholdcontext';
 import { Link } from 'react-router-dom';
 import logo from './assets/images/logo.png';
+import NavigationBar from './NavigationBar';
 
 const normalConsumption = 500;
 
-function Profile() {
+function Profile({ isAuthenticated, setIsAuthenticated }) {
   // States for each box visibility
   const [showBox, setShowBox] = useState(false);
   const [showBox1, setShowBox1] = useState(false);
@@ -74,22 +75,7 @@ function Profile() {
   return (
     <div>
       {/* Navigation Bar */}
-      <nav className="flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50">
-        <img src={logo} alt="logo" className="h-12" />
-        <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><Link to="/home">Home</Link></li>
-          <li>|</li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li>|</li>
-          <li><Link to="/profile"><u>Profile</u></Link></li>
-          <li>|</li>
-          <li><Link to="/alerts">Alerts</Link></li>
-          <li>|</li>
-          <li><Link to="/settings">Settings</Link></li>
-          <li>|</li>
-          <li><Link to="/login">Login</Link></li>
-        </ul>
-      </nav>
+      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
       {/* Sidebar Info Boxes */}
       <div>

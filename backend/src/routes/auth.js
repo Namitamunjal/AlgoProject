@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const { signup, signin, SendOtp, verifyotp, forgotpassword, passwordReset, data, all_data, alerts, alert_id, latest_data } = require('../controllers/register.js');
+const { signup, signin, SendOtp, verifyotp, forgotpassword, passwordReset, data, all_data, alerts, alert_id, latest_data, auth_check, logout } = require('../controllers/register.js');
 
 router.post('/register', signup);
 router.post('/login', signin);
@@ -15,5 +15,7 @@ router.get("/api/data/all-data", all_data);
 router.get("/api/alerts", alerts);
 router.post("/api/alerts/:id", alert_id);
 router.get("/api/latest", latest_data);
+router.get('/auth/check', auth_check);
+router.post('/logout', logout);
 
 module.exports = router;

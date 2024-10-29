@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from './assets/images/logo.png';
+import NavigationBar from './NavigationBar';
 
-const Alerts = () => {
+const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
   const [alerts, setAlerts] = useState([]);
   const [filteredAlerts, setFilteredAlerts] = useState([]);
   const [status, setStatus] = useState('Normal');
@@ -112,22 +113,7 @@ useEffect(() => {
   return (
     <div className="bg-blue-50">
       {/* Navigation Bar */}
-      <nav className='flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50'>
-        <img src={logo} alt="logo" className="h-12" />
-        <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><Link to="/home">Home</Link></li>
-          <li>|</li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li>|</li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li>|</li>
-          <li><Link to="/alerts"><u>Alerts</u></Link></li>
-          <li>|</li>
-          <li><Link to="/settings">Settings</Link></li>
-          <li>|</li>
-          <li><Link to="/login">Login</Link></li>
-        </ul>
-      </nav>
+      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
       {/* Filter Section */}
       <div className="p-5 bg-white shadow-md fixed w-full top-0 z-50 flex justify-between items-center mt-20">

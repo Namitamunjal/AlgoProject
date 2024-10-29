@@ -1,15 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from './assets/images/logo.png';
 
-function Login() {
+function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/auth/check', { withCredentials: true });
+        if (response.data.isAuthenticated) {
+          setIsAuthenticated(true);
+
+          // Redirect to login-redirect page
+          navigate('/login-redirect');
+
+          // Redirect to home after a brief delay
+          setTimeout(() => {
+            navigate('/home');
+          }, 2000); // Redirect to home after 2 seconds
+          
+        }
+      } catch (error) {
+        console.log("Not authenticated", error);
+      }
+    };
+
+    checkAuth();
+  }, [navigate, setIsAuthenticated]);
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -23,12 +47,19 @@ function Login() {
       const response = await axios.post('http://localhost:5000/login', {
         email,
         password,
-      });
+      }, { withCredentials: true });
       console.log(response.data);
-
       setSuccess('Login successful! Redirecting...');
       setError('');
-      navigate('/home');
+
+      // Set cookie and authentication state
+      
+      setTimeout(() => {
+        console.log("Cookies after login:", document.cookie); // Log cookies here for confirmation
+        setIsAuthenticated(true);
+        navigate('/home');
+      }, 500); // Short delay to allow cookies to set
+
       setEmail('');
       setPassword('');
 

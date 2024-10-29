@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 import { Link } from 'react-router-dom';
-
+import NavigationBar from './NavigationBar';
 import logo from './assets/images/logo.png';
 import bulb from "./assets/images/bulb.png";
 import factory from "./assets/images/factory.png";
@@ -10,7 +10,7 @@ import monitor from "./assets/images/system-uicons_gauge.png";
 import alerts from "./assets/images/tabler_bell.png";
 import actions from "./assets/images/Vector.png";
 
-function Home() {
+function Home({ isAuthenticated, setIsAuthenticated }) {
   return (
     <div>
       {/* Head section with external links */}
@@ -36,36 +36,7 @@ function Home() {
       {/* Main body content */}
       <body className="block">
         {/* Navigation Bar */}
-        <nav className="flex items-center p-5 w-full bg-blue-100">
-          <img src={logo} alt="logo" className="h-12" />
-          <ul className="flex justify-end px-5 size-full font-medium space-x-8 mx-10 text-lg">
-            <li>
-              <Link to="/home">
-                <u>Home</u>
-              </Link>
-            </li>
-            <li>|</li>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-            <li>|</li>
-            <li>
-              <Link to="/profile">Profile</Link>
-            </li>
-            <li>|</li>
-            <li>
-              <Link to="/alerts">Alerts</Link>
-            </li>
-            <li>|</li>
-            <li>
-              <Link to="/settings">Settings</Link>
-            </li>
-            <li>|</li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          </ul>
-        </nav>
+        <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
         {/* First section that contains get started */}
         <div className="bg-green-50 shadow-xl">

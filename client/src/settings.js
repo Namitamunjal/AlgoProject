@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from "./assets/images/logo.png"
+import NavigationBar from './NavigationBar';
 
-const Settings = () => {
+const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
   // State to handle visibility of information boxes
   const [visibleBox, setVisibleBox] = useState(null);
 
@@ -16,22 +18,7 @@ const Settings = () => {
   return (
     <div className="flex font-[Hanuman] bg-[#f0f9ff]">
       {/* Navigation Bar */}
-      <nav className="flex items-center p-5 fixed top-0 w-full bg-[#ebf8ff] shadow-md z-50">
-        <img src="./images/logo.png" alt="logo" className="h-12" />
-        <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><Link to="/home">Home</Link></li>
-          <li>|</li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li>|</li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li>|</li>
-          <li><Link to="/alerts">Alerts</Link></li>
-          <li>|</li>
-          <li><Link to="/settings"><u>Settings</u></Link></li>
-          <li>|</li>
-          <li><Link to="/login">Login</Link></li>
-        </ul>
-      </nav>
+      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
       {/* Sidebar */}
       <div className="w-60 h-screen bg-green-50 fixed top-0 left-0 border-r-4 shadow-xl">
