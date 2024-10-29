@@ -10,7 +10,7 @@ import About from './About';
 import Hero from './Hero';
 import Profile from './Profile';
 import Alerts from './Alerts';
-
+import Settings from './settings';
 
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/about" element={<About />} />
+  <Route path="/settings" element={<Settings />} />
       </Routes>
     </Router>
   );
