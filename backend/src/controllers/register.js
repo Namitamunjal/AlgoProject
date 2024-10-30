@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const RegisterModel = require('../models/model');
+const DataModel = require('../models/energy_data');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -28,6 +29,26 @@ module.exports.signup =  async (req, res) => {
     }
 };
 
+module.exports.auth_check = (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    try {
+        jwt.verify(token, JWT_SECRET);
+        res.status(200).json({ isAuthenticated: true });
+    } catch (err) {
+        res.status(401).json({ message: "Invalid token" });
+    }
+};
+
+module.exports.logout = (req, res) => {
+    res.clearCookie("token", { path: '/' }); // Ensure the path matches the one used when setting the cookie
+    res.status(200).json({ message: 'Logged out successfully' });
+};
+
 module.exports.signin = async (req, res) => {
     const { email, password } = req.body;
 
@@ -49,14 +70,15 @@ module.exports.signin = async (req, res) => {
         const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "10d" });
 
        
+         // Set the cookie and send the response
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, 
-            sameSite: 'strict', 
-            maxAge: 10 * 24 * 60 * 60 * 1000
-
+            secure: false, // Use false for localhost
+            sameSite: 'lax', // Lax provides better usability while still being reasonably secure
+            maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
         });
-        res.status(200).json({ message: "Login successful" });
+        
+        res.status(200).json({ message: "Login successful", token });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Internal Server Error" });
@@ -221,4 +243,62 @@ module.exports.passwordReset = async (req, res) => {
             res.json({ status: error.message || "An error occurred" });
         }
     });
+};
+
+// single latest data
+module.exports.latest_data = async (req, res) => {
+    try {
+        const latestEntry = await DataModel.findOne().sort({ date: -1 }); // Sort by date descending and get the latest
+        if (!latestEntry) return res.status(404).json({ message: 'No entries found' });
+        res.json(latestEntry);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//data of 30 entries only
+module.exports.data = async (req, res) => {
+    try {
+      const data = await DataModel.find().sort({ date: -1 }).limit(30); // Fetch last 30 records
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+};
+
+//all data
+module.exports.all_data = async (req, res) => {
+    try {
+      const data = await DataModel.find({});
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+  // Get all alerts
+module.exports.alerts = async (req, res) => {
+    try {
+        const alerts = await DataModel.find({ efficiencyScore: { $gt: 1 } }); // Fetch alerts above threshold
+        res.json(alerts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Update alert resolution
+module.exports.alert_id = async (req, res) => {
+    try {
+        const alert = await DataModel.findById(req.params.id);
+        if (!alert) return res.status(404).json({ message: 'Alert not found' });
+
+        alert.resolution = req.body.resolution;
+        alert.actionRequired = req.body.actionRequired; // If you want to track actions taken
+        await alert.save();
+        console.log('Alert updated:', alert);
+        res.json(alert);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };

@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import './index.css'; // Importing the stylesheet
-
+import { useThreshold } from './thresholdcontext';
 import logo from "./assets/images/logo.png";
+import { Link } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
 
-function Dashboard() {
-  
+function Dashboard({ isAuthenticated, setIsAuthenticated }) {
+  const { efficiencyThreshold } = useThreshold();
+  const THRESHOLD = efficiencyThreshold; // Set the threshold for energy efficiency [1 for now if >1 then bad else good]
   useEffect(() => {
     // Create chart instances
     const ctxEnergy = document.getElementById('energyChart').getContext('2d');
@@ -73,10 +76,10 @@ function Dashboard() {
     const efficiencyPieChart = new Chart(ctxEfficiencyPie, {
       type: 'pie',
       data: {
-        labels: ['Used', 'Remaining'],
+        labels: ['Bad Days', 'Good Days'],
         datasets: [{
-          data: [75, 25],
-          backgroundColor: ['#008000', '#b22222'],
+          data: [0, 0],
+          backgroundColor: ['#b22222', '#008000'],
           borderWidth: 0
         }]
       },
@@ -88,9 +91,75 @@ function Dashboard() {
       }
     });
 
+    // Fetch data every 1 minute
+    const fetchDataAndUpdateCharts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/data');
+        const data = await response.json();
+
+        updateEnergyChart(data);
+        updateCarbonOffsetChart(data);
+        updateEfficiencyPieChart(data, efficiencyPieChart);
+        updateAlerts(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    // Functions to update each chart with fetched data
+    function updateEnergyChart(data) {
+      const energyData = data.map(item => item.energyConsumption);
+      energyChart.data.datasets[0].data = energyData;
+      energyChart.update();
+    }
+
+    function updateCarbonOffsetChart(data) {
+      const carbonData = data.map(item => item.carbonEmission);
+      carbonOffsetChart.data.datasets[0].data = carbonData;
+      carbonOffsetChart.update();
+    }
+
+    function updateEfficiencyPieChart(data, pieChart) {
+      const efficiencyScores = data.map(item => item.efficiencyScore);
+      const goodDays = efficiencyScores.filter(score => score > THRESHOLD).length;
+      const badDays = efficiencyScores.length - goodDays;
+
+      pieChart.data.datasets[0].data = [goodDays, badDays];
+      pieChart.update();
+    }
+
+    function updateAlerts(data) {
+      const alertsTable = document.querySelector('table tbody');
+      alertsTable.innerHTML = ''; // Clear previous entries
+      
+      // Define the efficiency threshold
+      const efficiencyThreshold = THRESHOLD;
+
+      // Filter alerts based on conditions
+      const filteredAlerts = data.filter(alert => 
+        alert.efficiencyScore >= efficiencyThreshold && alert.actionRequired !== 'Marked as resolved'
+      )
+      .slice(0, 3); // Limit to top 3 alerts
+
+      filteredAlerts.forEach(alert => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${new Date(alert.date).toLocaleDateString()}</td>
+          <td>${alert.alert}</td>
+          <td>${alert.actionRequired || 'N/A'}</td>
+          <td>${alert.resolution || 'Pending'}</td>
+        `;
+        alertsTable.appendChild(row);
+      });
+    }
+
+    // Set interval to fetch new data every minute
+    const intervalId = setInterval(fetchDataAndUpdateCharts, 60000);
+    fetchDataAndUpdateCharts(); // Initial fetch
     
     // Cleanup function to destroy charts on unmount
     return () => {
+      clearInterval(intervalId);
       energyChart.destroy();
       carbonOffsetChart.destroy();
       efficiencyPieChart.destroy();
@@ -100,22 +169,7 @@ function Dashboard() {
   return (
     <div>
       {/* Navigation Bar */}
-      <nav className='flex items-center p-5 fixed top-0 w-full bg-blue-100 shadow-md z-50'>
-        <img src={logo} alt="logo" className="h-12" />
-        <ul className="flex justify-end px-5 w-full font-medium space-x-8 mx-10 text-lg">
-          <li><a href="./home">Home</a></li>
-          <li>|</li>
-          <li><a href="./dashboard"><u>Dashboard</u></a></li>
-          <li>|</li>
-          <li><a href="./profile">Profile</a></li>
-          <li>|</li>
-          <li><a href="./alerts">Alerts</a></li>
-          <li>|</li>
-          <li><a href="./settings">Settings</a></li>
-          <li>|</li>
-          <li><a href="./login">Login</a></li>
-        </ul>
-      </nav>
+      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
       {/* Sidebar */}
       <div className="flex">
@@ -159,7 +213,7 @@ function Dashboard() {
             <div className="chart-container flex flex-col justify-center items-center mx-auto h-64 w-64 md:h-80 md:w-80 lg:h-96 lg:w-96">
               <div className="chart-box">
                 <canvas id="efficiencyPieChart"></canvas>
-                <p className="text-lg font-semibold text-[#1C767C] mt-4 text-center">75/100</p>
+                <p className="text-lg font-semibold text-[#1C767C] mt-4 text-center">Efficiency Threshold: {THRESHOLD}</p>
               </div>
             </div>
           </div>
@@ -167,25 +221,28 @@ function Dashboard() {
 
           {/* Recent Alerts Section */}
           <h2 className="text-2xl font-bold mb-6 mt-10 ">Recent Alerts</h2>
-          <div className="bg-[#E0F7FA] p-6 rounded-xl shadow-lg">
-            <table className="w-full text-center border-collapse border border-blue-500">
-              <thead>
-                <tr className="bg-[#EDF7ED]">
-                  <th className="border border-blue-500 p-2">Date</th>
-                  <th className="border border-blue-500 p-2">Company Name</th>
-                  <th className="border border-blue-500 p-2">Issue</th>
-                  <th className="border border-blue-500 p-2">Action Required</th>
+          <div className="bg-[#F3F4F6] rounded-lg shadow-md p-4">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alert</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action Required</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Resolution</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td className="p-4">1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                </tr>
-              </tbody>
+              <tbody className="bg-white divide-y divide-gray-200"></tbody>
             </table>
+            
+            {/* "Show All" Button */}
+            <div className="text-left mt-4">
+              <Link 
+                to="/alerts" 
+                className="inline-block px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                Show All
+              </Link>
+            </div>
           </div>
         </div>
       </div>
