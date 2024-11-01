@@ -23,13 +23,19 @@ const HomePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          Welcome to Our Green Energy Platform
+          Welcome to Green Gauge 
         </motion.h1>
+        <motion.h3
+        className="text-2xl font-bold text-white mb-4"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{delay:0.5, duration: 1 }}
+        >Our Green Energy Platform</motion.h3>
         <motion.p
           className="text-xl text-gray-100 mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ delay: 1, duration: 1 }}
         >
           Reducing Carbon Footprints, One Step at a Time.
         </motion.p>
