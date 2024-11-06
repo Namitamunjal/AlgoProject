@@ -1,5 +1,6 @@
 # 🌍 **GreenGauge** 🌱
 **Sustainable Energy Consumption & Carbon Offset Tracking**
+
 **"GreenChain: Blockchain for Transparent Renewable Energy Subsidy Distribution"**
 
 ## 🌟 **Overview**
