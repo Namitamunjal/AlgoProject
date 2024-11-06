@@ -13,10 +13,13 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
   const [showBox1, setShowBox1] = useState(false);
   const [showBox2, setShowBox2] = useState(false);
   const [showBox3, setShowBox3] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
 
-    // Refs for carousels
+  // Refs for carousels
   const daysCarouselRef = useRef(null);
   const alertsCarouselRef = useRef(null);
+  const openModal = (modalName) => setActiveModal(modalName);
+  const closeModal = () => setActiveModal(null);
 
   // Function to show and auto-hide boxes after 15 seconds
   const handleShowBox = (setFunction) => {
@@ -24,7 +27,7 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
     setTimeout(() => setFunction(false), 15000); // Hide after 15 seconds
   };
 
-    // Carousel scroll functionality
+  // Carousel scroll functionality
   const scrollCarousel = (carouselRef, direction) => {
     if (carouselRef.current) {
       const scrollAmount = direction === 'left' ? -200 : 200; // Adjust scroll distance as needed
@@ -73,141 +76,221 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
     return () => clearInterval(intervalId);
   }, [energyThreshold]);
   return (
+
     <div>
-      {/* Navigation Bar */}
-      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+      <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Hanuman:wght@100;300;400;700;900&display=swap"
+          rel="stylesheet"
+        />
+        <style>
+          {`
+        body {
+          font-family: "Hanuman", serif;
+          font-weight: 400;
+          font-style: normal;
+        }
+      `}
+        </style>
+      </head>
 
-      {/* Sidebar Info Boxes */}
-      <div>
-        {showBox && (
-          <div className="p-5 rounded-2xl mt-32 ml-64 bg-slate-200 z-40 text-gray-600 w-64 absolute">
-            Overview <br/>
-            The website is a renewable energy monitoring platform that provides alerts based on companies' energy consumption
-            relative to their carbon emission ratios. It aims to promote sustainable practices and support the green
-            revolution
-            by helping organizations optimize their energy use and reduce their environmental impact.
+      <body>
+        {/* Navigation Bar */}
+        <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+
+
+        {/* Layout Container */}
+        <div className="flex">
+          {/* Sidebar */}
+
+          {/* Sidebar Info Boxes */}
+          <aside className="w-60 h-screen bg-green-50 fixed mt-[93px] left-0 border-r-4 shadow-xl hidden lg:block">
+            <div className="">
+              <nav className="flex flex-col space-y-4 px-4">
+                <button onClick={() => openModal("Overview")} className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
+                  Overview
+                </button>
+                <button onClick={() => openModal("Energy Usage")} className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
+                  Energy Usage
+                </button>
+                <button onClick={() => openModal("Carbon Offset")} className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
+                  Carbon Offset
+                </button>
+                <button onClick={() => openModal("Alerts")} className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
+                  Alerts
+                </button>
+              </nav>
+            </div>
+          </aside>
+
+          {activeModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-lg shadow-2xl w-11/12 sm:w-2/3 lg:w-1/3 relative">
+              <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-800">✕</button>
+              <h2 className="text-2xl font-semibold mb-4">{activeModal}</h2>
+              <p className="text-gray-700">
+                {activeModal === "Overview" && (
+                  <div>
+                    <p>
+                      The website is a renewable energy monitoring platform that provides alerts based on companies' energy consumption relative to their carbon emission ratios. It aims to promote sustainable practices and support the green revolution by helping organizations optimize their energy use and reduce their environmental impact.
+                    </p>
+                    <Link to="/dashboard">
+                      <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
+                        Go to Overview Page
+                      </button>
+                    </Link>
+                  </div>
+                )}
+
+                {activeModal === "Energy Usage" && (
+                  <div>
+                    <p>
+                      Details about energy usage and metrics are displayed here: Normal Consumption: less than 500 kWh; Normal Efficiency Score: less than 1 kg/KWh
+                    </p>
+                    <Link to="/dashboard">
+                      <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
+                        Go to Energy Usage Page
+                      </button>
+                    </Link>
+                  </div>
+                )}
+
+                {activeModal === "Carbon Offset" && (
+                  <div>
+                    <p>
+                      Information about carbon offset initiatives and goals: Normal Range: below 0.5 kg CO₂ per kWh; Hazardous Range: Above 0.8 kg CO₂ per kWh
+                    </p>
+                    <Link to="/dashboard">
+                      <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
+                        Go to Carbon Offset Page
+                      </button>
+                    </Link>
+                  </div>
+                )}
+                {activeModal === "Alerts" && (
+                  <div>
+                    <p>View alerts and notifications regarding energy and usage updates.</p>
+                    <Link to="/alerts">
+                      <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
+                        Go to Alerts Page
+                      </button>
+                    </Link>
+                  </div>
+                )}
+
+              </p>
+            </div>
           </div>
         )}
-        {showBox1 && (
-          <div className="p-5 rounded-2xl mt-32 ml-64 bg-slate-200 z-40 text-gray-600 w-64 absolute">
-            Energy Usage <br />
-            Energy usage refers to the total amount of energy consumed by an entity, typically measured in kilowatt-hours
-            (kWh).
-            Monitoring energy usage helps organizations identify consumption patterns, improve efficiency, and reduce costs.
-            By
-            analyzing usage data, companies can implement energy-saving measures and support sustainability initiatives,
-            contributing to a greener future.
-          </div>
-        )}
-        {showBox2 && (
-          <div className="p-5 rounded-2xl mt-32 ml-64 bg-slate-200 z-40 text-gray-600 w-64 absolute">
-            Carbon Offset <br />
-            Carbon offsetting involves compensating for carbon dioxide emissions produced by activities, such as energy
-            consumption, by funding projects that reduce or capture emissions elsewhere. This could include investing in
-            renewable energy sources, reforestation, or energy efficiency projects. Companies engage in carbon offsetting to
-            achieve carbon neutrality and fulfill corporate social responsibility commitments.
-          </div>
-        )}
-        {showBox3 && (
-          <div className="p-5 rounded-2xl mt-32 ml-64 bg-slate-200 z-40 text-gray-600 w-64 absolute">
-            Alerts <br />
-            Alerts are notifications generated by the monitoring system to inform companies when their energy consumption
-            exceeds predefined thresholds or when carbon emission ratios become concerning. These alerts enable proactive
-            management of energy usage, encouraging timely interventions to reduce waste and lower emissions. Implementing an
-            alert system supports organizations in maintaining sustainability goals.
-          </div>
-        )}
-      </div>
 
-      {/* Layout Container */}
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="w-60 h-screen bg-green-50 fixed top-0 left-0 border-r-4 shadow-xl mt-24 space-y-4">
-        <div class="mt-24">
-          <ul class="space-y-4">
-            <li className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
-              <button onClick={() => handleShowBox(setShowBox)}>Overview</button>
-            </li>
-            <li className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
-              <button onClick={() => handleShowBox(setShowBox1)}>Energy Usage</button>
-            </li>
-            <li className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
-              <button onClick={() => handleShowBox(setShowBox2)}>Carbon Offset</button>
-            </li>
-            <li className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
-              <button onClick={() => handleShowBox(setShowBox3)}>Alerts</button>
-            </li>
-          </ul>
-        </div>
-        </div>
+          {/* Main Content */}
+          <div className="absolute ml-64 p-10 mt-20">
+            <h1 className="text-5xl text-[#2D6A4F] font-bold mb-2 mt-5">ABC Electric</h1>
+            <p className="text-gray-600">Headquarters: Rueil-Malmaison, France<br />support.ccc@abc-electric.com</p>
 
-        {/* Main Content */}
-        <div className="absolute ml-64 p-10 mt-20">
-          <h1 className="text-5xl text-[#2D6A4F] font-bold mb-2 mt-5">Schneider Electric</h1>
-          <p className="text-gray-600">Headquarters: Rueil-Malmaison, France<br />support.ccc@schneider-electric.com</p>
-
-          {/* Efficient Consumption Days */}
-          <div>
-            <h1 className="text-3xl text-[#2D6A4F] font-bold mb-4 mt-8">Most Efficient Consumption Days</h1>
-            <div className="relative w-5/6 px-10">
+            {/* Efficient Consumption Days */}
+            <div>
+              <h1 className="text-3xl text-[#2D6A4F] font-bold mb-4 mt-8">Most Efficient Consumption Days</h1>
+              <div className="relative px-10">
                 {/* Carousel Wrapper */}
                 <div className="flex overflow-hidden space-x-5" ref={daysCarouselRef}>
-                    {efficientDays.map((day, index) => (
+                  {efficientDays.map((day, index) => (
                     <div key={index} className="w-1/5 flex-shrink-0 bg-green-50 p-5 rounded-xl shadow-lg m-5 text-gray-700 text-sm">
-                        Electricity Consumption <br />
-                        Observed: {day.energyConsumption} kWh <br />
-                        Normal: {normalConsumption} kWh <br />
-                        Date: {new Date(day.date).toLocaleDateString()}
+                      Electricity Consumption <br />
+                      Observed: {day.energyConsumption} kWh <br />
+                      Normal: {normalConsumption} kWh <br />
+                      Date: {new Date(day.date).toLocaleDateString()}
                     </div>
-                    ))}
+                  ))}
                 </div>
 
                 {/* Left Arrow */}
                 <button className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2" id="prevDaysBtn"
-                onClick={() => scrollCarousel(daysCarouselRef, 'left')}>
-                &lt;
+                  onClick={() => scrollCarousel(daysCarouselRef, 'left')}>
+                  &lt;
                 </button>
-        
+
                 {/* Right Arrow */}
                 <button className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2" id="nextDaysBtn"
-                onClick={() => scrollCarousel(daysCarouselRef, 'right')}>
-                &gt;
+                  onClick={() => scrollCarousel(daysCarouselRef, 'right')}>
+                  &gt;
                 </button>
+              </div>
             </div>
+
+            {/* Major Alerts */}
+            <div>
+              <h1 className="text-3xl text-[#2D6A4F] font-bold mb-4 mt-8">Major Alerts</h1>
+              <div className="relative  px-10">
+                {/* Carousel Wrapper */}
+                <div className="flex overflow-hidden space-x-5" ref={alertsCarouselRef}>
+                  {majorAlerts.map((alert, index) => (
+                    <div key={index} className="w-1/5 flex-shrink-0 bg-red-50 p-5 rounded-xl shadow-lg m-5 text-gray-700 text-sm">
+                      Electricity Consumption <br />
+                      Observed: {alert.energyConsumption} kWh <br />
+                      Normal: {normalConsumption} kWh <br />
+                      Date: {new Date(alert.date).toLocaleDateString()} <br />
+                      Alert: {alert.alert} <br />
+                      {/* Action Required: {alert.actionRequired || "N/A"} */}
+                    </div>
+                  ))}
+                </div>
+                {/* Left Arrow */}
+                <button class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2" id="prevAlertsBtn"
+                  onClick={() => scrollCarousel(alertsCarouselRef, 'left')}>
+                  &lt;
+                </button>
+
+                {/* Right Arrow */}
+                <button class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2" id="nextAlertsBtn"
+                  onClick={() => scrollCarousel(alertsCarouselRef, 'right')}>
+                  &gt;
+                </button>
+              </div>
+            </div>
+            {/* Footer */}
+            <br />
+            <footer className="bg-[#D5E7FF] text-gray-700 p-5 -ml-[58px] -mr-10 -mb-20">
+              <div className="container flex justify-between items-center">
+                {/* Left: Footer Links */}
+                <ul className=" text-left mx-10 flex space-x-10 py-10">
+                  <li>
+                    <a href="./about" className="hover:underline">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:underline">
+                      Contact Us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:underline">
+                      Privacy Policy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:underline">
+                      Terms Conditions
+                    </a>
+                  </li>
+                </ul>
+
+                {/* Right: Copyright Text */}
+                <p className="text-center text-gray-500 text-sm">
+                  &copy; 2024 Energy Credit & Carbon Offset Tracking. All rights reserved.
+                </p>
+              </div>
+            </footer>
           </div>
 
-          {/* Major Alerts */}
-          <div>
-          <h1 className="text-3xl text-[#2D6A4F] font-bold mb-4 mt-8">Major Alerts</h1>
-          <div className="relative w-5/6 px-10">
-            {/* Carousel Wrapper */}
-            <div className="flex overflow-hidden space-x-5" ref={alertsCarouselRef}>
-              {majorAlerts.map((alert, index) => (
-                <div key={index} className="w-1/5 flex-shrink-0 bg-red-50 p-5 rounded-xl shadow-lg m-5 text-gray-700 text-sm">
-                    Electricity Consumption <br />
-                    Observed: {alert.energyConsumption} kWh <br />
-                    Normal: {normalConsumption} kWh <br />
-                    Date: {new Date(alert.date).toLocaleDateString()} <br />
-                    Alert: {alert.alert} <br />
-                    {/* Action Required: {alert.actionRequired || "N/A"} */}
-                </div>
-                ))}
-            </div>
-            {/* Left Arrow */}
-            <button class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2" id="prevAlertsBtn"
-            onClick={() => scrollCarousel(alertsCarouselRef, 'left')}>
-                &lt;
-            </button>
-        
-            {/* Right Arrow */}
-            <button class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2" id="nextAlertsBtn"
-            onClick={() => scrollCarousel(alertsCarouselRef, 'right')}>
-                &gt;
-            </button>
-            </div>
-          </div>
         </div>
-      </div>
+
+
+      </body>
     </div>
   );
 }
