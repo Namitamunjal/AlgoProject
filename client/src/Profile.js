@@ -150,7 +150,7 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
                     <p>
                       Details about energy usage and metrics are displayed here: Normal Consumption: less than 500 kWh; Normal Efficiency Score: less than 1 kg/KWh
                     </p>
-                    <Link to="/dashboard">
+                    <Link to="/dashboard#energyChart">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
                         Go to Energy Usage Page
                       </button>
@@ -163,7 +163,7 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
                     <p>
                       Information about carbon offset initiatives and goals: Normal Range: below 0.5 kg CO₂ per kWh; Hazardous Range: Above 0.8 kg CO₂ per kWh
                     </p>
-                    <Link to="/dashboard">
+                    <Link to="/dashboard#carbonOffsetChart">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
                         Go to Carbon Offset Page
                       </button>
@@ -185,6 +185,7 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
             </div>
           </div>
         )}
+
 
           {/* Main Content */}
           <div className="absolute ml-64 p-10 mt-20">

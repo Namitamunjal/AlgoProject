@@ -207,7 +207,7 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
                     <p>
                       Details about energy usage and metrics are displayed here: Normal Consumption: less than 500 kWh; Normal Efficiency Score: less than 1 kg/KWh
                     </p>
-                    <Link to="/dashboard">
+                    <Link to="/dashboard#energyChart">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
                         Go to Energy Usage Page
                       </button>
@@ -220,7 +220,7 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
                     <p>
                       Information about carbon offset initiatives and goals: Normal Range: below 0.5 kg CO₂ per kWh; Hazardous Range: Above 0.8 kg CO₂ per kWh
                     </p>
-                    <Link to="/dashboard">
+                    <Link to="/dashboard#carbonOffsetChart">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
                         Go to Carbon Offset Page
                       </button>
@@ -242,6 +242,7 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
             </div>
           </div>
         )}
+
 
         <main className="lg:ml-64 w-full max-w-full px-4 sm:px-6 md:px-10 space-y-10 mt-16">
           <h1 className="text-3xl lg:text-4xl text-[#2D6A4F] font-bold mt-20">Dashboard</h1>
