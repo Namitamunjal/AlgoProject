@@ -67,7 +67,7 @@ module.exports.signin = async (req, res) => {
         }
 
         
-        const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "10d" });
+        const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "1h" });
 
        
          // Set the cookie and send the response
@@ -75,7 +75,7 @@ module.exports.signin = async (req, res) => {
             httpOnly: true,
             secure: false, // Use false for localhost
             sameSite: 'lax', // Lax provides better usability while still being reasonably secure
-            maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
+            maxAge: 1 * 60 * 60 * 1000, // 1 hr
         });
         
         res.status(200).json({ message: "Login successful", token });
