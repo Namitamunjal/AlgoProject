@@ -1,7 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from './assets/images/logo.png';
 import NavigationBar from './NavigationBar';
 
 const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
@@ -14,10 +12,6 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
 
   const threshold = 500;
 
-  useEffect(() => {
-    // Scroll to the top when the component mounts
-    window.scrollTo(0, 0);
-  }, []);
   const fetchAlerts = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/alerts');
@@ -75,7 +69,7 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
         });
         setShowDialog(false);
         setResolutionDetails('');
-        fetchAlerts();
+        fetchAlerts(); // Re-fetch alerts to update the UI after resolving
       } catch (error) {
         console.error('Error resolving alert:', error);
       }
@@ -91,12 +85,14 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
           <p><strong>Efficiency Score:</strong> {alert.efficiencyScore}</p>
           <p><strong>Current Consumption:</strong> {alert.energyConsumption} kWh</p>
           <p><strong>Status:</strong> {alert.resolution === 'N/A' ? 'Pending' : 'Resolved'}</p>
-          <button onClick={() => {
-            setCurrentAlert(alert);
-            setShowDialog(true);
-          }} className="bg-green-500 text-white px-4 py-2 mt-3 rounded hover:bg-green-600">
-            Mark as Resolved
-          </button>
+          {alert.resolution === 'N/A' && (
+            <button onClick={() => {
+              setCurrentAlert(alert);
+              setShowDialog(true);
+            }} className="bg-green-500 text-white px-4 py-2 mt-3 rounded hover:bg-green-600">
+              Mark as Resolved
+            </button>
+          )}
         </div>
       ));
   };
@@ -133,7 +129,6 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
       <body>
       <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
       <div className='mt-20'>
-
         <div className="p-6 bg-white shadow-lg fixed w-full z-50 flex justify-between items-center">
           <h1 className="text-3xl font-semibold text-gray-700">Alerts Dashboard</h1>
           <div className="flex space-x-4">
@@ -178,42 +173,19 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
             </div>
           </div>
         )}
-         {/* Footer */}
-         <br />
-         <footer className="bg-[#D5E7FF] text-gray-700 p-5 ">
+        <br /><br />
+        <footer className="bg-[#D5E7FF] text-gray-700 p-5 ">
           <div className="container flex justify-between items-center">
-            {/* Left: Footer Links */}
             <ul className=" text-left mx-10 flex space-x-10 py-10">
-            <li>
-                    <a href="./about" className="hover:underline">
-                      About
-                    </a>
-                  </li>
-                  <li>
-                    <a href="./Contactus" className="hover:underline">
-                      Contact Us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="./PrivacyPolicy" className="hover:underline">
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="./TermsConditions" className="hover:underline">
-                      Terms Conditions
-                    </a>
-                  </li>
+              <li><a href="./about" className="hover:underline">About</a></li>
+              <li><a href="./Contactus" className="hover:underline">Contact Us</a></li>
+              <li><a href="./PrivacyPolicy" className="hover:underline">Privacy Policy</a></li>
+              <li><a href="./TermsConditions" className="hover:underline">Terms Conditions</a></li>
             </ul>
-
-            {/* Right: Copyright Text */}
-            <p className="text-center text-gray-500 text-sm">
-              &copy; 2024 Energy Credit & Carbon Offset Tracking. All rights reserved.
-            </p>
+            <p className="text-center text-gray-500 text-sm">&copy; 2024 Energy Credit & Carbon Offset Tracking. All rights reserved.</p>
           </div>
         </footer>
-        </div>
-        
+      </div>
       </body>
     </div>
   );
