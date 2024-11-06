@@ -25,7 +25,7 @@
 - **API**: Custom REST APIs for real-time data & alerts
 - **Other Tools**: Axios, Chart.js
 
-> **Note**: If you want to implement this project without Algo Chain, clone the `master` branch. To use Algo Chain, clone the `main` branch.
+> **Note**: If you want to implement this project without Algo Chain, clone the `WithoutAlgo` branch. To use Algo Chain, clone the `main` branch.
 
 ### Algorand Smart Contract Path
    - The Algorand smart contract file for Algo Chain is located at:
