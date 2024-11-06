@@ -1,5 +1,4 @@
 ---
-
 # 🌍 **GreenGauge** 🌱
 **Sustainable Energy Consumption & Carbon Offset Tracking**
 
