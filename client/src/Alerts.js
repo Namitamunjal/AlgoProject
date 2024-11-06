@@ -12,6 +12,11 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
 
   const threshold = 500;
 
+  useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+  
   const fetchAlerts = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/alerts');
