@@ -148,26 +148,26 @@ function Home({ isAuthenticated, setIsAuthenticated }) {
           <div className="container flex justify-between items-center">
             {/* Left: Footer Links */}
             <ul className=" text-left mx-10 flex space-x-10 py-10">
-              <li>
-                <a href="./about" className="hover:underline">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Terms Conditions
-                </a>
-              </li>
+            <li>
+                    <a href="./about" className="hover:underline">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="./Contactus" className="hover:underline">
+                      Contact Us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="./PrivacyPolicy" className="hover:underline">
+                      Privacy Policy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="./TermsConditions" className="hover:underline">
+                      Terms Conditions
+                    </a>
+                  </li>
             </ul>
 
             {/* Right: Copyright Text */}

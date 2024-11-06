@@ -14,6 +14,9 @@ import Settings from './settings';
 import ProtectedRoute from './ProtectedRoute';
 import LoginRedirect from './LoginRedirect';
 import { useEffect, useState } from 'react';
+import ContactUs from './ContactUs';
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsConditions from './TermsConditions';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,6 +45,9 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/about" element={<About />} />
+            <Route path="/ContactUs" element={<ContactUs />} />
+            <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+            <Route path="/TermsConditions" element={<TermsConditions />} />
 
             {/* Protected Routes */}
             <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>

@@ -264,17 +264,17 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:underline">
+                    <a href="./Contactus" className="hover:underline">
                       Contact Us
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:underline">
+                    <a href="./PrivacyPolicy" className="hover:underline">
                       Privacy Policy
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:underline">
+                    <a href="./TermsConditions" className="hover:underline">
                       Terms Conditions
                     </a>
                   </li>
