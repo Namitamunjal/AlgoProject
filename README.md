@@ -2,9 +2,21 @@
 # 🌍 **GreenGauge** 🌱
 **Sustainable Energy Consumption & Carbon Offset Tracking**
 
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
 
 ## 🌟 **Overview**
 **GreenGauge** is a robust web application designed to empower individuals and organizations to monitor and manage their energy consumption efficiently. With real-time alerts, tracking dashboards, and tailored recommendations, GreenGauge helps reduce carbon footprints by promoting sustainability. This application is aimed at providing both individuals and corporations insights into their energy consumption and offset efforts to achieve a greener planet.
+
+
 
 ## 🚀 **Features**
 - **Real-Time Monitoring**: Track your energy consumption in real-time with instant updates and historical data.
@@ -16,7 +28,8 @@
 
 ## 🛠 **Tech Stack**
 - **Frontend**: React, Tailwind CSS
-- **Backend**: ALgo Chain, Node.js, Express
+- **Backend**: Node.js, Express
+- **Blockchain Integration**: ALgo Chain
 - **Database**: MongoDB
 - **API**: Custom REST APIs for real-time data & alerts
 - **Other Tools**: Axios, Chart.js
@@ -50,10 +63,13 @@
 ## Backend Setup
 1. Install dependencies:
    ```bash
-   npm install
+    npm install --legacy-peer-deps
    ```
-
-2. Create a `.env` file in the backend directory:
+2. Start the development server:
+   ```bash
+   node ./src/server.js
+   ```
+3. Create a `.env` file in the backend directory:
    ```bash
    touch .env
    ```
