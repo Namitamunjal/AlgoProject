@@ -1,41 +1,51 @@
 const algosdk = require('algosdk');
+const dotenv = require('dotenv');
+dotenv.config();
 
-// Algorand connection details (replace with your PureStake token)
-const algodToken = { 'X-API-Key': process.env.PURESTAKE_API_KEY };
-const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
-const algodPort = '';
+// Algorand connection details for the local Docker network
+const algodToken = { 'X-Algo-API-Token': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+const algodServer = 'http://localhost';
+const algodPort = '4001';  // default port for local Algorand Docker network
+
 const client = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
-// Algorand account mnemonic and address
+// Algorand account mnemonic and address for local testing
 const mnemonic = process.env.ALGORAND_MNEMONIC;
 const senderAccount = algosdk.mnemonicToSecretKey(mnemonic);
+const senderAddress = algosdk.encodeAddress(senderAccount.addr.publicKey);
 
-// Replace with your smart contract's Application ID
-const appId = SMART_CONTRACT_APP_ID;
+// Replace with your local smart contract Application ID
+const appId = 1002;  // Smart contract ID deployed on localnet
 async function interactWithSmartContract(methodName, dataType = '', userData = '') {
     try {
         const params = await client.getTransactionParams().do();
-        const note = JSON.stringify({ methodName, dataType, userData });
 
-        // Define application arguments based on the smart contract method
+        // Ensure `note` is a string
+        const note = typeof userData === 'string' ? userData : JSON.stringify(userData);
+
+        // Initialize `appArgs` with explicit `Uint8Array` conversions
         let appArgs = [];
-
-        // Define arguments based on the method being called
         switch (methodName) {
             case 'signup':
             case 'signin':
             case 'logout':
-                appArgs = [new Uint8Array(Buffer.from(methodName)), new Uint8Array(Buffer.from(userData))];
+                appArgs = [
+                    new Uint8Array(Buffer.from(methodName, 'utf-8')), 
+                    new Uint8Array(Buffer.from(userData, 'utf-8'))
+                ];
                 break;
 
             case 'record_alert':
-                appArgs = [new Uint8Array(Buffer.from(methodName)), new Uint8Array(Buffer.from(userData))];
+                appArgs = [
+                    new Uint8Array(Buffer.from(methodName, 'utf-8')), 
+                    new Uint8Array(Buffer.from(userData, 'utf-8'))
+                ];
                 break;
 
             case 'record_data':
                 appArgs = [
-                    new Uint8Array(Buffer.from(dataType)), // dataType as a separate argument for `record_data`
-                    new Uint8Array(Buffer.from(userData))
+                    new Uint8Array(Buffer.from(dataType, 'utf-8')), 
+                    new Uint8Array(Buffer.from(userData, 'utf-8'))
                 ];
                 break;
 
@@ -43,16 +53,18 @@ async function interactWithSmartContract(methodName, dataType = '', userData = '
                 throw new Error(`Invalid method name: ${methodName}`);
         }
 
-        // Construct the transaction to call the smart contract
-        const txn = algosdk.makeApplicationNoOpTxn(
-            senderAccount.addr,
-            params,
-            appId,
-            appArgs,
-            note ? new Uint8Array(Buffer.from(note)) : undefined // Add optional metadata
-        );
+        // Construct the transaction with the updated `note`
+        const txn = algosdk.makeApplicationCallTxnFromObject({
+            sender: senderAddress,
+            suggestedParams: params,
+            appIndex: appId,  // Application ID
+            onComplete: algosdk.OnApplicationComplete.NoOpOC,  // No-op transaction
+            appArgs: appArgs,  // Application arguments (App Args in logs)
+            note: new Uint8Array(Buffer.from(JSON.stringify(note))),  // Note field as Uint8Array
+        });
+        
 
-        // Sign the transaction
+        // Sign and send the transaction
         const signedTxn = txn.signTxn(senderAccount.sk);
         const tx = await client.sendRawTransaction(signedTxn).do();
 
