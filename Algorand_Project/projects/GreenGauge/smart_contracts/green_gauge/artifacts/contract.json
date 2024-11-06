@@ -1,0 +1,70 @@
+{
+    "name": "GreenGauge",
+    "methods": [
+        {
+            "name": "signup",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "user_data"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "signin",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "user_data"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "logout",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "user_data"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "record_alert",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "user_data"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "record_data",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "dataType"
+                },
+                {
+                    "type": "string",
+                    "name": "user_data"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ],
+    "networks": {}
+}

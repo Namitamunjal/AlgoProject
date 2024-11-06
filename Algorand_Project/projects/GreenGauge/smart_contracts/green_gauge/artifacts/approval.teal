@@ -1,0 +1,246 @@
+#pragma version 8
+intcblock 1 0
+bytecblock 0x 0x757365725f7369676e65645f7570 0x616c657274735f636f756e74 0x646174615f636f756e74
+txn NumAppArgs
+intc_1 // 0
+==
+bnz main_l12
+txna ApplicationArgs 0
+pushbytes 0x77d57c8c // "signup(string)void"
+==
+bnz main_l11
+txna ApplicationArgs 0
+pushbytes 0xd912569a // "signin(string)void"
+==
+bnz main_l10
+txna ApplicationArgs 0
+pushbytes 0x706a136b // "logout(string)void"
+==
+bnz main_l9
+txna ApplicationArgs 0
+pushbytes 0x37b326d4 // "record_alert(string)void"
+==
+bnz main_l8
+txna ApplicationArgs 0
+pushbytes 0x41e5ae21 // "record_data(string,string)void"
+==
+bnz main_l7
+err
+main_l7:
+txn OnCompletion
+intc_1 // NoOp
+==
+txn ApplicationID
+intc_1 // 0
+!=
+&&
+assert
+callsub recorddatacaster_9
+intc_0 // 1
+return
+main_l8:
+txn OnCompletion
+intc_1 // NoOp
+==
+txn ApplicationID
+intc_1 // 0
+!=
+&&
+assert
+callsub recordalertcaster_8
+intc_0 // 1
+return
+main_l9:
+txn OnCompletion
+intc_1 // NoOp
+==
+txn ApplicationID
+intc_1 // 0
+!=
+&&
+assert
+callsub logoutcaster_7
+intc_0 // 1
+return
+main_l10:
+txn OnCompletion
+intc_1 // NoOp
+==
+txn ApplicationID
+intc_1 // 0
+!=
+&&
+assert
+callsub signincaster_6
+intc_0 // 1
+return
+main_l11:
+txn OnCompletion
+intc_1 // NoOp
+==
+txn ApplicationID
+intc_1 // 0
+!=
+&&
+assert
+callsub signupcaster_5
+intc_0 // 1
+return
+main_l12:
+txn OnCompletion
+intc_1 // NoOp
+==
+bnz main_l14
+err
+main_l14:
+txn ApplicationID
+intc_1 // 0
+==
+assert
+intc_0 // 1
+return
+
+// signup
+signup_0:
+proto 1 0
+bytec_1 // "user_signed_up"
+intc_0 // 1
+app_global_put
+pushbytes 0x5369676e7570205573657220446174613a20 // "Signup User Data: "
+frame_dig -1
+extract 2 0
+concat
+log
+intc_0 // 1
+return
+
+// signin
+signin_1:
+proto 1 0
+bytec_1 // "user_signed_up"
+app_global_get
+intc_0 // 1
+==
+assert
+pushbytes 0x6c6173745f6c6f67696e5f74696d65 // "last_login_time"
+global LatestTimestamp
+app_global_put
+pushbytes 0x5369676e696e205573657220446174613a20 // "Signin User Data: "
+frame_dig -1
+extract 2 0
+concat
+log
+intc_0 // 1
+return
+
+// logout
+logout_2:
+proto 1 0
+bytec_1 // "user_signed_up"
+app_global_get
+intc_0 // 1
+==
+assert
+pushbytes 0x6c6173745f6c6f676f75745f74696d65 // "last_logout_time"
+global LatestTimestamp
+app_global_put
+pushbytes 0x4c6f676f7574205573657220446174613a20 // "Logout User Data: "
+frame_dig -1
+extract 2 0
+concat
+log
+intc_0 // 1
+return
+
+// record_alert
+recordalert_3:
+proto 1 0
+bytec_2 // "alerts_count"
+bytec_2 // "alerts_count"
+app_global_get
+intc_0 // 1
++
+app_global_put
+pushbytes 0x416c65727420446174613a20 // "Alert Data: "
+frame_dig -1
+extract 2 0
+concat
+log
+intc_0 // 1
+return
+
+// record_data
+recorddata_4:
+proto 2 0
+bytec_3 // "data_count"
+bytec_3 // "data_count"
+app_global_get
+intc_0 // 1
++
+app_global_put
+pushbytes 0x4461746120547970653a20 // "Data Type: "
+frame_dig -2
+extract 2 0
+concat
+pushbytes 0x2c205573657220446174613a20 // ", User Data: "
+concat
+frame_dig -1
+extract 2 0
+concat
+log
+intc_0 // 1
+return
+
+// signup_caster
+signupcaster_5:
+proto 0 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub signup_0
+retsub
+
+// signin_caster
+signincaster_6:
+proto 0 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub signin_1
+retsub
+
+// logout_caster
+logoutcaster_7:
+proto 0 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub logout_2
+retsub
+
+// record_alert_caster
+recordalertcaster_8:
+proto 0 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub recordalert_3
+retsub
+
+// record_data_caster
+recorddatacaster_9:
+proto 0 0
+bytec_0 // ""
+dup
+txna ApplicationArgs 1
+frame_bury 0
+txna ApplicationArgs 2
+frame_bury 1
+frame_dig 0
+frame_dig 1
+callsub recorddata_4
+retsub

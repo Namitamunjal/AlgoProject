@@ -1,0 +1,152 @@
+{
+    "hints": {
+        "signup(string)void": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        },
+        "signin(string)void": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        },
+        "logout(string)void": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        },
+        "record_alert(string)void": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        },
+        "record_data(string,string)void": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        }
+    },
+    "source": {
+        "approval": "I3ByYWdtYSB2ZXJzaW9uIDgKaW50Y2Jsb2NrIDEgMApieXRlY2Jsb2NrIDB4IDB4NzU3MzY1NzI1ZjczNjk2NzZlNjU2NDVmNzU3MCAweDYxNmM2NTcyNzQ3MzVmNjM2Zjc1NmU3NCAweDY0NjE3NDYxNWY2MzZmNzU2ZTc0CnR4biBOdW1BcHBBcmdzCmludGNfMSAvLyAwCj09CmJueiBtYWluX2wxMgp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweDc3ZDU3YzhjIC8vICJzaWdudXAoc3RyaW5nKXZvaWQiCj09CmJueiBtYWluX2wxMQp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweGQ5MTI1NjlhIC8vICJzaWduaW4oc3RyaW5nKXZvaWQiCj09CmJueiBtYWluX2wxMAp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweDcwNmExMzZiIC8vICJsb2dvdXQoc3RyaW5nKXZvaWQiCj09CmJueiBtYWluX2w5CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MzdiMzI2ZDQgLy8gInJlY29yZF9hbGVydChzdHJpbmcpdm9pZCIKPT0KYm56IG1haW5fbDgKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHg0MWU1YWUyMSAvLyAicmVjb3JkX2RhdGEoc3RyaW5nLHN0cmluZyl2b2lkIgo9PQpibnogbWFpbl9sNwplcnIKbWFpbl9sNzoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzEgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzEgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiByZWNvcmRkYXRhY2FzdGVyXzkKaW50Y18wIC8vIDEKcmV0dXJuCm1haW5fbDg6CnR4biBPbkNvbXBsZXRpb24KaW50Y18xIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18xIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgcmVjb3JkYWxlcnRjYXN0ZXJfOAppbnRjXzAgLy8gMQpyZXR1cm4KbWFpbl9sOToKdHhuIE9uQ29tcGxldGlvbgppbnRjXzEgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzEgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiBsb2dvdXRjYXN0ZXJfNwppbnRjXzAgLy8gMQpyZXR1cm4KbWFpbl9sMTA6CnR4biBPbkNvbXBsZXRpb24KaW50Y18xIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18xIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgc2lnbmluY2FzdGVyXzYKaW50Y18wIC8vIDEKcmV0dXJuCm1haW5fbDExOgp0eG4gT25Db21wbGV0aW9uCmludGNfMSAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMSAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIHNpZ251cGNhc3Rlcl81CmludGNfMCAvLyAxCnJldHVybgptYWluX2wxMjoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzEgLy8gTm9PcAo9PQpibnogbWFpbl9sMTQKZXJyCm1haW5fbDE0Ogp0eG4gQXBwbGljYXRpb25JRAppbnRjXzEgLy8gMAo9PQphc3NlcnQKaW50Y18wIC8vIDEKcmV0dXJuCgovLyBzaWdudXAKc2lnbnVwXzA6CnByb3RvIDEgMApieXRlY18xIC8vICJ1c2VyX3NpZ25lZF91cCIKaW50Y18wIC8vIDEKYXBwX2dsb2JhbF9wdXQKcHVzaGJ5dGVzIDB4NTM2OTY3NmU3NTcwMjA1NTczNjU3MjIwNDQ2MTc0NjEzYTIwIC8vICJTaWdudXAgVXNlciBEYXRhOiAiCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApjb25jYXQKbG9nCmludGNfMCAvLyAxCnJldHVybgoKLy8gc2lnbmluCnNpZ25pbl8xOgpwcm90byAxIDAKYnl0ZWNfMSAvLyAidXNlcl9zaWduZWRfdXAiCmFwcF9nbG9iYWxfZ2V0CmludGNfMCAvLyAxCj09CmFzc2VydApwdXNoYnl0ZXMgMHg2YzYxNzM3NDVmNmM2ZjY3Njk2ZTVmNzQ2OTZkNjUgLy8gImxhc3RfbG9naW5fdGltZSIKZ2xvYmFsIExhdGVzdFRpbWVzdGFtcAphcHBfZ2xvYmFsX3B1dApwdXNoYnl0ZXMgMHg1MzY5Njc2ZTY5NmUyMDU1NzM2NTcyMjA0NDYxNzQ2MTNhMjAgLy8gIlNpZ25pbiBVc2VyIERhdGE6ICIKZnJhbWVfZGlnIC0xCmV4dHJhY3QgMiAwCmNvbmNhdApsb2cKaW50Y18wIC8vIDEKcmV0dXJuCgovLyBsb2dvdXQKbG9nb3V0XzI6CnByb3RvIDEgMApieXRlY18xIC8vICJ1c2VyX3NpZ25lZF91cCIKYXBwX2dsb2JhbF9nZXQKaW50Y18wIC8vIDEKPT0KYXNzZXJ0CnB1c2hieXRlcyAweDZjNjE3Mzc0NWY2YzZmNjc2Zjc1NzQ1Zjc0Njk2ZDY1IC8vICJsYXN0X2xvZ291dF90aW1lIgpnbG9iYWwgTGF0ZXN0VGltZXN0YW1wCmFwcF9nbG9iYWxfcHV0CnB1c2hieXRlcyAweDRjNmY2NzZmNzU3NDIwNTU3MzY1NzIyMDQ0NjE3NDYxM2EyMCAvLyAiTG9nb3V0IFVzZXIgRGF0YTogIgpmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKY29uY2F0CmxvZwppbnRjXzAgLy8gMQpyZXR1cm4KCi8vIHJlY29yZF9hbGVydApyZWNvcmRhbGVydF8zOgpwcm90byAxIDAKYnl0ZWNfMiAvLyAiYWxlcnRzX2NvdW50IgpieXRlY18yIC8vICJhbGVydHNfY291bnQiCmFwcF9nbG9iYWxfZ2V0CmludGNfMCAvLyAxCisKYXBwX2dsb2JhbF9wdXQKcHVzaGJ5dGVzIDB4NDE2YzY1NzI3NDIwNDQ2MTc0NjEzYTIwIC8vICJBbGVydCBEYXRhOiAiCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApjb25jYXQKbG9nCmludGNfMCAvLyAxCnJldHVybgoKLy8gcmVjb3JkX2RhdGEKcmVjb3JkZGF0YV80Ogpwcm90byAyIDAKYnl0ZWNfMyAvLyAiZGF0YV9jb3VudCIKYnl0ZWNfMyAvLyAiZGF0YV9jb3VudCIKYXBwX2dsb2JhbF9nZXQKaW50Y18wIC8vIDEKKwphcHBfZ2xvYmFsX3B1dApwdXNoYnl0ZXMgMHg0NDYxNzQ2MTIwNTQ3OTcwNjUzYTIwIC8vICJEYXRhIFR5cGU6ICIKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmNvbmNhdApwdXNoYnl0ZXMgMHgyYzIwNTU3MzY1NzIyMDQ0NjE3NDYxM2EyMCAvLyAiLCBVc2VyIERhdGE6ICIKY29uY2F0CmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApjb25jYXQKbG9nCmludGNfMCAvLyAxCnJldHVybgoKLy8gc2lnbnVwX2Nhc3RlcgpzaWdudXBjYXN0ZXJfNToKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKY2FsbHN1YiBzaWdudXBfMApyZXRzdWIKCi8vIHNpZ25pbl9jYXN0ZXIKc2lnbmluY2FzdGVyXzY6CnByb3RvIDAgMApieXRlY18wIC8vICIiCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmNhbGxzdWIgc2lnbmluXzEKcmV0c3ViCgovLyBsb2dvdXRfY2FzdGVyCmxvZ291dGNhc3Rlcl83Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgp0eG5hIEFwcGxpY2F0aW9uQXJncyAxCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApjYWxsc3ViIGxvZ291dF8yCnJldHN1YgoKLy8gcmVjb3JkX2FsZXJ0X2Nhc3RlcgpyZWNvcmRhbGVydGNhc3Rlcl84Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgp0eG5hIEFwcGxpY2F0aW9uQXJncyAxCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApjYWxsc3ViIHJlY29yZGFsZXJ0XzMKcmV0c3ViCgovLyByZWNvcmRfZGF0YV9jYXN0ZXIKcmVjb3JkZGF0YWNhc3Rlcl85Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgpkdXAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQpmcmFtZV9idXJ5IDAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDEKY2FsbHN1YiByZWNvcmRkYXRhXzQKcmV0c3Vi",
+        "clear": "I3ByYWdtYSB2ZXJzaW9uIDgKcHVzaGludCAwIC8vIDAKcmV0dXJu"
+    },
+    "state": {
+        "global": {
+            "num_byte_slices": 0,
+            "num_uints": 5
+        },
+        "local": {
+            "num_byte_slices": 0,
+            "num_uints": 0
+        }
+    },
+    "schema": {
+        "global": {
+            "declared": {
+                "alerts_count": {
+                    "type": "uint64",
+                    "key": "alerts_count",
+                    "descr": ""
+                },
+                "data_count": {
+                    "type": "uint64",
+                    "key": "data_count",
+                    "descr": ""
+                },
+                "last_login_time": {
+                    "type": "uint64",
+                    "key": "last_login_time",
+                    "descr": ""
+                },
+                "last_logout_time": {
+                    "type": "uint64",
+                    "key": "last_logout_time",
+                    "descr": ""
+                },
+                "user_signed_up": {
+                    "type": "uint64",
+                    "key": "user_signed_up",
+                    "descr": ""
+                }
+            },
+            "reserved": {}
+        },
+        "local": {
+            "declared": {},
+            "reserved": {}
+        }
+    },
+    "contract": {
+        "name": "GreenGauge",
+        "methods": [
+            {
+                "name": "signup",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "user_data"
+                    }
+                ],
+                "returns": {
+                    "type": "void"
+                }
+            },
+            {
+                "name": "signin",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "user_data"
+                    }
+                ],
+                "returns": {
+                    "type": "void"
+                }
+            },
+            {
+                "name": "logout",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "user_data"
+                    }
+                ],
+                "returns": {
+                    "type": "void"
+                }
+            },
+            {
+                "name": "record_alert",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "user_data"
+                    }
+                ],
+                "returns": {
+                    "type": "void"
+                }
+            },
+            {
+                "name": "record_data",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "dataType"
+                    },
+                    {
+                        "type": "string",
+                        "name": "user_data"
+                    }
+                ],
+                "returns": {
+                    "type": "void"
+                }
+            }
+        ],
+        "networks": {}
+    },
+    "bare_call_config": {
+        "no_op": "CREATE"
+    }
+}
