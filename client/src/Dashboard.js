@@ -1,11 +1,13 @@
 // Dashboard.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { useThreshold } from './thresholdcontext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
 
 function Dashboard({ isAuthenticated, setIsAuthenticated }) {
+  const location = useLocation();
+
   const { efficiencyThreshold } = useThreshold();
   const THRESHOLD = efficiencyThreshold;
 
@@ -13,6 +15,15 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
 
   const openModal = (modalName) => setActiveModal(modalName);
   const closeModal = () => setActiveModal(null);
+
+//FOR SMOOTH SCROLLING
+  useEffect(() => {
+    if (location.hash) {
+        const element = document.querySelector(location.hash);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+    }
+    else window.scrollTo(0, 0);
+  }, [location]);
 
   useEffect(() => {
     const ctxEnergy = document.getElementById('energyChart').getContext('2d');
@@ -194,7 +205,7 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
                     <p>
                       The website is a renewable energy monitoring platform that provides alerts based on companies' energy consumption relative to their carbon emission ratios. It aims to promote sustainable practices and support the green revolution by helping organizations optimize their energy use and reduce their environmental impact.
                     </p>
-                    <Link to="/dashboard">
+                    <Link to="/dashboard#hi">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
                         Go to Overview Page
                       </button>
@@ -244,7 +255,7 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
         )}
 
 
-        <main className="lg:ml-64 w-full max-w-full px-4 sm:px-6 md:px-10 space-y-10 mt-16">
+        <main className="lg:ml-64 w-full max-w-full px-4 sm:px-6 md:px-10 space-y-10 mt-16" id="hi">
           <h1 className="text-3xl lg:text-4xl text-[#2D6A4F] font-bold mt-20">Dashboard</h1>
           <h2 className="text-xl lg:text-2xl font-bold mb-6">Real-Time Data Overview</h2>
 

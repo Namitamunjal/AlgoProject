@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "./assets/images/logo.png"
 import NavigationBar from './NavigationBar';
@@ -16,6 +16,11 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
       setVisibleBox(null);
     }, 15000); // 15 seconds
   };
+
+  useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
@@ -73,7 +78,7 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                     <p>
                       The website is a renewable energy monitoring platform that provides alerts based on companies' energy consumption relative to their carbon emission ratios. It aims to promote sustainable practices and support the green revolution by helping organizations optimize their energy use and reduce their environmental impact.
                     </p>
-                    <Link to="/dashboard">
+                    <Link to="/dashboard#hi">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
                         Go to Overview Page
                       </button>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './index.css';
 import { Link } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
@@ -11,6 +11,10 @@ import alerts from "./assets/images/tabler_bell.png";
 import actions from "./assets/images/Vector.png";
 
 function Home({ isAuthenticated, setIsAuthenticated }) {
+  useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div>
       {/* Head section with external links */}
@@ -71,7 +75,7 @@ function Home({ isAuthenticated, setIsAuthenticated }) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 place-items-center">
             {/* Card 1 */}
-            <Link to="/dashboard">
+            <Link to="/dashboard#hi">
               <div className="bg-green-50 p-10 flex flex-col items-center text-center rounded-3xl shadow-xl w-96 h-72 hover:scale-105 transition transform duration-300">
                 <img src={bulb} alt="bulb" className="w-16 h-16 mb-5" />
                 <h2 className="text-gray-600 font-bold text-xl mb-2">Total Energy Consumed</h2>
@@ -80,7 +84,7 @@ function Home({ isAuthenticated, setIsAuthenticated }) {
             </Link>
 
             {/* Card 2 */}
-            <Link to="/dashboard#carbon">
+            <Link to="/dashboard#carbonOffsetChart">
               <div className="bg-blue-50 p-10 flex flex-col items-center text-center rounded-3xl shadow-xl w-96 h-72 hover:scale-105 transition transform duration-300">
                 <img src={factory} alt="factory" className="w-16 h-16 mb-5" />
                 <h2 className="text-gray-600 font-bold text-xl mb-2">Total Carbon Offset</h2>
@@ -88,7 +92,6 @@ function Home({ isAuthenticated, setIsAuthenticated }) {
               </div>
             </Link>
 
-            {/* Card 3 */}
             {/* Card 3 */}
             <Link to="/home" onClick={(e) => {
               e.preventDefault(); // Prevents navigation if not admin
