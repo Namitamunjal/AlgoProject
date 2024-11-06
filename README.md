@@ -1,12 +1,12 @@
+---
 
 # 🌍 **GreenGauge** 🌱
 **Sustainable Energy Consumption & Carbon Offset Tracking**
 
-
 ## 🌟 **Overview**
 **GreenGauge** is a robust web application designed to empower individuals and organizations to monitor and manage their energy consumption efficiently. With real-time alerts, tracking dashboards, and tailored recommendations, GreenGauge helps reduce carbon footprints by promoting sustainability. This application is aimed at providing both individuals and corporations insights into their energy consumption and offset efforts to achieve a greener planet.
 
-
+---
 
 ## 🚀 **Features**
 - **Real-Time Monitoring**: Track your energy consumption in real-time with instant updates and historical data.
@@ -15,14 +15,25 @@
 - **Analytics Dashboard**: Get detailed reports and visualizations of your consumption trends and efficiency scores.
 - **Responsive Design**: Accessible from any device – desktop, tablet, or mobile.
 
+---
 
 ## 🛠 **Tech Stack**
 - **Frontend**: React, Tailwind CSS
 - **Backend**: Node.js, Express
-- **Blockchain Integration**: ALgo Chain
+- **Blockchain Integration**: Algo Chain
 - **Database**: MongoDB
 - **API**: Custom REST APIs for real-time data & alerts
 - **Other Tools**: Axios, Chart.js
+
+> **Note**: If you want to implement this project without Algo Chain, clone the `master` branch. To use Algo Chain, clone the `main` branch.
+
+### Algorand Smart Contract Path
+   - The Algorand smart contract file for Algo Chain is located at:
+     ```
+     AlgoProject\Algorand_Project\projects\GreenGauge\smart_contracts\green_gauge\green_gauge.py
+     ```
+
+---
 
 ## ⚙️ **Getting Started**
 
@@ -36,10 +47,9 @@
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/Namitamunjal/AlgoProject.git
-  
    ```
 
-   ## Client Setup
+#### Client Setup
 1. Install dependencies:
    ```bash
    npm install --legacy-peer-deps
@@ -50,10 +60,10 @@
    npm run dev
    ```
 
-## Backend Setup
+#### Backend Setup
 1. Install dependencies:
    ```bash
-    npm install --legacy-peer-deps
+   npm install --legacy-peer-deps
    ```
 2. Start the development server:
    ```bash
@@ -66,6 +76,7 @@
 
 4. Copy the contents of `.env.sample` into the newly created `.env` file.
 
+---
 
 ## 🧩 **Project Structure**
 
@@ -97,7 +108,6 @@ GreenGauge takes data security seriously:
 
 ---
 
-
 ## 🤝 **Contributing**
 We welcome contributions to GreenGauge! To contribute:
 1. Fork the repository.
@@ -121,4 +131,4 @@ Thanks to everyone who has contributed to GreenGauge, as well as our team in sus
 
 > Together, let’s make energy consumption **greener** and more **sustainable**! 🌱
 
----
+--- 
