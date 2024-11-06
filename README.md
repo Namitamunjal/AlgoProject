@@ -2,16 +2,6 @@
 # 🌍 **GreenGauge** 🌱
 **Sustainable Energy Consumption & Carbon Offset Tracking**
 
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
 
 ## 🌟 **Overview**
 **GreenGauge** is a robust web application designed to empower individuals and organizations to monitor and manage their energy consumption efficiently. With real-time alerts, tracking dashboards, and tailored recommendations, GreenGauge helps reduce carbon footprints by promoting sustainability. This application is aimed at providing both individuals and corporations insights into their energy consumption and offset efforts to achieve a greener planet.
@@ -74,13 +64,8 @@
    touch .env
    ```
 
-3. Copy the contents of `.env.sample` into the newly created `.env` file.
+4. Copy the contents of `.env.sample` into the newly created `.env` file.
 
-4. Start the backend server:
-   ```bash
-   npm run start
-   ```
----
 
 ## 🧩 **Project Structure**
 
