@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const RegisterModel = require('../models/model');
 const DataModel = require('../models/energy_data');
 const dotenv = require('dotenv');
+const { interactWithSmartContract } = require('./algorandService');
 dotenv.config();
 
 const JWT_SECRET = "jwt_secret_key";
@@ -22,6 +23,11 @@ module.exports.signup =  async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await RegisterModel.create({ name, email, password: hashedPassword });
+
+        // Signup logic for Algorand Integration
+        const note = { action: 'signup', user: email, signupTimestamp: Date.now() }; // Metadata
+        await interactWithSmartContract('signup', '', note);
+
         res.status(201).json({ message: "Account created successfully" });
     } catch (err) {
         console.error(err);
@@ -44,9 +50,24 @@ module.exports.auth_check = (req, res) => {
     }
 };
 
-module.exports.logout = (req, res) => {
-    res.clearCookie("token", { path: '/' }); // Ensure the path matches the one used when setting the cookie
-    res.status(200).json({ message: 'Logged out successfully' });
+module.exports.logout = async (req, res) => {
+    try{
+        const token = req.cookies.token;
+        // Extract email from token
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const email = decoded.email;
+
+        // Prepare Algorand transaction for logout
+        const note = { action: 'logout', user: email, logoutTimestamp: Date.now() }; // Metadata
+        await interactWithSmartContract('logout', '', note);
+        
+        // Clear token and respond to the client
+        res.clearCookie("token", { path: '/' }); // Ensure the path matches the one used when setting the cookie
+        res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error) {
+        console.error("Error in logout:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 };
 
 module.exports.signin = async (req, res) => {
@@ -78,6 +99,10 @@ module.exports.signin = async (req, res) => {
             maxAge: 1 * 60 * 60 * 1000, // 1 hr
         });
         
+        // Algorand transaction for logging user 
+        const note = { action: 'signin', user: email, loginTimestamp: Date.now() }; // Metadata
+        await interactWithSmartContract('signin', '', note);
+
         res.status(200).json({ message: "Login successful", token });
     } catch (err) {
         console.error(err);
@@ -251,6 +276,8 @@ module.exports.latest_data = async (req, res) => {
         const latestEntry = await DataModel.findOne().sort({ date: -1 }); // Sort by date descending and get the latest
         if (!latestEntry) return res.status(404).json({ message: 'No entries found' });
         res.json(latestEntry);
+        await interactWithSmartContract('record_data', 'energyConsumption', latestEntry.energyConsumption);
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -261,6 +288,7 @@ module.exports.data = async (req, res) => {
     try {
       const data = await DataModel.find().sort({ date: -1 }).limit(30); // Fetch last 30 records
       res.json(data);
+      await interactWithSmartContract('record_data', 'all_data', data);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -282,6 +310,7 @@ module.exports.alerts = async (req, res) => {
     try {
         const alerts = await DataModel.find({ efficiencyScore: { $gt: 1 } }); // Fetch alerts above threshold
         res.json(alerts);
+        await interactWithSmartContract('record_data', 'all_alerts', alerts);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -296,6 +325,8 @@ module.exports.alert_id = async (req, res) => {
         alert.resolution = req.body.resolution;
         alert.actionRequired = req.body.actionRequired; // If you want to track actions taken
         await alert.save();
+        await interactWithSmartContract('record_alert', '', alert);
+        
         console.log('Alert updated:', alert);
         res.json(alert);
     } catch (error) {
