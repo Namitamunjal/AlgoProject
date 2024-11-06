@@ -1,6 +1,9 @@
 ---
-# 🌍 **GreenGauge** 🌱
+
+# 🌍 *GreenGauge* 🌱
 **Sustainable Energy Consumption & Carbon Offset Tracking**
+***"GreenChain: Blockchain for Transparent Renewable Energy Subsidy Distribution"***
+
 
 ## 🌟 **Overview**
 **GreenGauge** is a robust web application designed to empower individuals and organizations to monitor and manage their energy consumption efficiently. With real-time alerts, tracking dashboards, and tailored recommendations, GreenGauge helps reduce carbon footprints by promoting sustainability. This application is aimed at providing both individuals and corporations insights into their energy consumption and offset efforts to achieve a greener planet.
