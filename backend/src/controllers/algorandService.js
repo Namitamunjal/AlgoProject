@@ -11,7 +11,7 @@ const mnemonic = process.env.ALGORAND_MNEMONIC;
 const senderAccount = algosdk.mnemonicToSecretKey(mnemonic);
 
 // Replace with your smart contract's Application ID
-const appId = YOUR_SMART_CONTRACT_APP_ID;
+const appId = SMART_CONTRACT_APP_ID;
 async function interactWithSmartContract(methodName, dataType = '', userData = '') {
     try {
         const params = await client.getTransactionParams().do();
