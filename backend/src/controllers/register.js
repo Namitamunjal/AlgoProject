@@ -25,7 +25,11 @@ module.exports.signup =  async (req, res) => {
         const newUser = await RegisterModel.create({ name, email, password: hashedPassword });
 
         // Signup logic for Algorand Integration
-        const note = { action: 'signup', user: email, signupTimestamp: Date.now() }; // Metadata
+        const note = JSON.stringify({
+            action: 'signup',
+            user: email,
+            loginTimestamp: Date.now()
+        });
         await interactWithSmartContract('signup', '', note);
 
         res.status(201).json({ message: "Account created successfully" });
@@ -58,7 +62,11 @@ module.exports.logout = async (req, res) => {
         const email = decoded.email;
 
         // Prepare Algorand transaction for logout
-        const note = { action: 'logout', user: email, logoutTimestamp: Date.now() }; // Metadata
+        const note = JSON.stringify({
+            action: 'logout',
+            user: email,
+            loginTimestamp: Date.now()
+        });
         await interactWithSmartContract('logout', '', note);
         
         // Clear token and respond to the client
@@ -100,7 +108,11 @@ module.exports.signin = async (req, res) => {
         });
         
         // Algorand transaction for logging user 
-        const note = { action: 'signin', user: email, loginTimestamp: Date.now() }; // Metadata
+        const note = JSON.stringify({
+            action: 'signin',
+            user: email,
+            loginTimestamp: Date.now()
+        });
         await interactWithSmartContract('signin', '', note);
 
         res.status(200).json({ message: "Login successful", token });
