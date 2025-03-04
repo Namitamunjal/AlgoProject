@@ -16,10 +16,16 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
     // Scroll to the top when the component mounts
     window.scrollTo(0, 0);
   }, []);
-  
+
   const fetchAlerts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/alerts');
+      // const response = await axios.get('http://localhost:5000/api/alerts');
+      // console.log('Fetched alerts:', response.data);
+
+      const blockchain_response = await axios.post('http://127.0.0.1:5000/getDataAboveLimit', { limit: 500 }, { withCredentials: true });
+      const response = blockchain_response.data;
+      console.log("Blockchain response:", blockchain_response.data.data);
+
       const sortedAlerts = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
       setAlerts(sortedAlerts);
       setFilteredAlerts(sortedAlerts);
@@ -42,8 +48,22 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
 
   const fetchRealTimeData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/latest');
-      const data = response.data;
+      // const response = await axios.get('http://localhost:5000/api/latest');
+      // console.log('Fetched real-time data:', response);
+      // const data = response.data;
+
+      const blockchain_response = await axios.get('http://127.0.0.1:5000/getAllData', { withCredentials: true });
+      const allData = blockchain_response.data.data;
+      console.log("Blockchain response:", blockchain_response.data.data);
+
+      // Sort the data in descending order by date (assumes date is in ISO format)
+      allData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // Get the latest data (first element after sorting)
+      const latestData = allData[0];
+      console.log("Latest Data:", latestData);
+
+      const data = latestData;
 
       if (data && data.energyConsumption) {
         updateRealTimeData(data.energyConsumption);
@@ -68,10 +88,18 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
   const handleResolveAlert = async () => {
     if (currentAlert) {
       try {
-        await axios.post(`http://localhost:5000/api/alerts/${currentAlert._id}`, {
-          resolution: resolutionDetails,
-          actionRequired: 'Marked as resolved',
-        });
+        // await axios.post(`http://localhost:5000/api/alerts/${currentAlert._id}`, {
+        //   resolution: resolutionDetails,
+        //   actionRequired: 'Marked as resolved',
+        // });
+
+        const blockchain_response = await axios.post('http://127.0.0.1:5000/action', {
+          id: currentAlert._id,
+          input: resolutionDetails,
+        }, { withCredentials: true });
+
+        console.log("Blockchain response:", blockchain_response.data);
+
         setShowDialog(false);
         setResolutionDetails('');
         fetchAlerts(); // Re-fetch alerts to update the UI after resolving
@@ -132,65 +160,65 @@ const Alerts = ({ isAuthenticated, setIsAuthenticated }) => {
       </head>
 
       <body>
-      <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-      <div className='mt-20'>
-        <div className="p-6 bg-white shadow-lg fixed w-full z-50 flex justify-between items-center">
-          <h1 className="text-3xl font-semibold text-gray-700">Alerts Dashboard</h1>
-          <div className="flex space-x-4">
-            <button onClick={showPendingAlerts} className="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-500">Pending</button>
-            <button onClick={showResolvedAlerts} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Resolved</button>
-            <button onClick={showAllAlerts} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">All</button>
-          </div>
-        </div>
-
-        <div className="flex pt-32 px-10 space-x-6">
-          <div className="w-1/4 p-5 bg-white rounded-lg shadow-md sticky top-24 h-64">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Real-time Data</h2>
-            <div id="realTimeData" className="space-y-3 text-gray-600">
-            </div>
-            <div id="status" className="mt-4 text-gray-800 font-semibold">
-              Status: {status}
+        <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+        <div className='mt-20'>
+          <div className="p-6 bg-white shadow-lg fixed w-full z-50 flex justify-between items-center">
+            <h1 className="text-3xl font-semibold text-gray-700">Alerts Dashboard</h1>
+            <div className="flex space-x-4">
+              <button onClick={showPendingAlerts} className="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-500">Pending</button>
+              <button onClick={showResolvedAlerts} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Resolved</button>
+              <button onClick={showAllAlerts} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">All</button>
             </div>
           </div>
 
-          <div className="w-2/4">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Alerts</h2>
-            <div id="alertsSection" className="space-y-4">
-              {displayAlerts()}
+          <div className="flex pt-32 px-10 space-x-6">
+            <div className="w-1/4 p-5 bg-white rounded-lg shadow-md sticky top-24 h-64">
+              <h2 className="text-xl font-semibold mb-4 text-gray-700">Real-time Data</h2>
+              <div id="realTimeData" className="space-y-3 text-gray-600">
+              </div>
+              <div id="status" className="mt-4 text-gray-800 font-semibold">
+                Status: {status}
+              </div>
             </div>
-          </div>
-        </div>
 
-        {showDialog && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl mb-4 font-semibold">Resolve Alert</h2>
-              <textarea
-                value={resolutionDetails}
-                onChange={(e) => setResolutionDetails(e.target.value)}
-                className="border p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Enter resolution details"
-              />
-              <div className="flex justify-end">
-                <button onClick={() => setShowDialog(false)} className="bg-gray-400 text-white px-4 py-2 rounded mr-2 hover:bg-gray-500">Cancel</button>
-                <button onClick={handleResolveAlert} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Resolve</button>
+            <div className="w-2/4">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">Alerts</h2>
+              <div id="alertsSection" className="space-y-4">
+                {displayAlerts()}
               </div>
             </div>
           </div>
-        )}
-        <br /><br />
-        <footer className="bg-[#D5E7FF] text-gray-700 p-5 ">
-          <div className="container flex justify-between items-center">
-            <ul className=" text-left mx-10 flex space-x-10 py-10">
-              <li><a href="./about" className="hover:underline">About</a></li>
-              <li><a href="./Contactus" className="hover:underline">Contact Us</a></li>
-              <li><a href="./PrivacyPolicy" className="hover:underline">Privacy Policy</a></li>
-              <li><a href="./TermsConditions" className="hover:underline">Terms Conditions</a></li>
-            </ul>
-            <p className="text-center text-gray-500 text-sm">&copy; 2024 Energy Credit & Carbon Offset Tracking. All rights reserved.</p>
-          </div>
-        </footer>
-      </div>
+
+          {showDialog && (
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-xl mb-4 font-semibold">Resolve Alert</h2>
+                <textarea
+                  value={resolutionDetails}
+                  onChange={(e) => setResolutionDetails(e.target.value)}
+                  className="border p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                  placeholder="Enter resolution details"
+                />
+                <div className="flex justify-end">
+                  <button onClick={() => setShowDialog(false)} className="bg-gray-400 text-white px-4 py-2 rounded mr-2 hover:bg-gray-500">Cancel</button>
+                  <button onClick={handleResolveAlert} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Resolve</button>
+                </div>
+              </div>
+            </div>
+          )}
+          <br /><br />
+          <footer className="bg-[#D5E7FF] text-gray-700 p-5 ">
+            <div className="container flex justify-between items-center">
+              <ul className=" text-left mx-10 flex space-x-10 py-10">
+                <li><a href="./about" className="hover:underline">About</a></li>
+                <li><a href="./Contactus" className="hover:underline">Contact Us</a></li>
+                <li><a href="./PrivacyPolicy" className="hover:underline">Privacy Policy</a></li>
+                <li><a href="./TermsConditions" className="hover:underline">Terms Conditions</a></li>
+              </ul>
+              <p className="text-center text-gray-500 text-sm">&copy; 2024 Energy Credit & Carbon Offset Tracking. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
       </body>
     </div>
   );

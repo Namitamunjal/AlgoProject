@@ -25,7 +25,7 @@
 - **API**: Custom REST APIs for real-time data & alerts
 - **Other Tools**: Axios, Chart.js
 
-> **Note**: If you want to implement this project without Algo Chain, clone the `master` branch. To use Algo Chain, clone the `main` branch.
+> **Note**: If you want to implement this project without Algo Chain, clone the `master` branch. To use Algo Chain, clone the `main` branch or clone `Blockchain` branch to run through only blockchain localnet using hardhat.
 
 ### Algorand Smart Contract Path
    - The Algorand smart contract file for Algo Chain is located at:
@@ -51,24 +51,41 @@
 
 #### Client Setup
 1. Install dependencies:
+   cd client
+
    ```bash
    npm install --legacy-peer-deps
    ```
 
 2. Start the development server:
    ```bash
-   npm run dev
+   npm start
    ```
 
 #### Backend Setup
 1. Install dependencies:
+   cd backend
+
    ```bash
    npm install --legacy-peer-deps
    ```
-2. Start the development server:
+2. Start the development server by running the following commands in the seperate terminals:
    ```bash
    node ./src/server.js
    ```
+
+   ```bash
+   npx hardhat node
+   ```
+
+   ```bash
+   npx hardhat run scripts/deploy.js --network localhost
+   ```
+
+   ```bash
+   python app.py
+   ```
+
 3. Create a `.env` file in the backend directory:
    ```bash
    touch .env

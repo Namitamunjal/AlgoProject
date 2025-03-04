@@ -19,5 +19,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.3",
     "nodemailer": "^6.9.15"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.19"
   }
 }

@@ -48,20 +48,24 @@ function Profile({ isAuthenticated, setIsAuthenticated }) {
   // Fetch data function
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/data/all-data');
-      const allData = response.data;
-      console.log(allData);
+      // const response = await axios.get('http://localhost:5000/api/data/all-data');
+      // const allData = response.data;
+      // console.log(allData);
+
+      const blockchain_response = await axios.get('http://127.0.0.1:5000/getAllData', { withCredentials: true });
+        
+      console.log("Blockchain response:", blockchain_response.data.data);
 
       // Sort all data by date in descending order (latest dates first)
-      allData.sort((a, b) => new Date(b.date) - new Date(a.date));
+      blockchain_response.data.data.sort((a, b) => new Date(b.date) - new Date(a.date));
 
       // Filter efficient days above the threshold
-      const efficient = allData.filter(item => item.energyConsumption <= energyThreshold);  //energyconsumption threshold value
+      const efficient = blockchain_response.data.data.filter(item => item.energyConsumption <= energyThreshold);  //energyconsumption threshold value
       setEfficientDays(efficient);
 
       // Filter major alerts where actionRequired is either "Shut down non-essential systems." or "Initiate efficiency improvement measures."
       const majorAlertConditions = ["Shut down non-essential systems.", "Initiate efficiency improvement measures."];
-      const alerts = allData.filter(item => majorAlertConditions.includes(item.actionRequired));
+      const alerts = blockchain_response.data.data.filter(item => majorAlertConditions.includes(item.actionRequired));
       setMajorAlerts(alerts);
     } catch (error) {
       console.error('Error fetching data:', error);

@@ -1,20 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from "./assets/images/logo.png"
+import axios from 'axios';
+import logo from "./assets/images/logo.png";
 import NavigationBar from './NavigationBar';
 
 const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
-  // State to handle visibility of information boxes
+  // State for other settings, modals, etc.
   const [visibleBox, setVisibleBox] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const openModal = (modalName) => setActiveModal(modalName);
   const closeModal = () => setActiveModal(null);
-  // Function to display box and hide it after 15 seconds
-  const showBox = (boxId) => {
-    setVisibleBox(boxId);
-    setTimeout(() => {
-      setVisibleBox(null);
-    }, 15000); // 15 seconds
+
+  // State for the store form inputs and response message
+  const [storeData, setStoreData] = useState({
+    date: '',
+    energyConsumption: '',
+    carbonEmission: '',
+    efficiencyScore: '',
+  });
+  const [storeResponse, setStoreResponse] = useState('');
+
+  // Function to update form state when a field changes
+  const handleStoreInputChange = (e) => {
+    const { name, value } = e.target;
+    setStoreData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Function to handle form submission for storing data
+  const handleStoreSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        date: storeData.date,
+        energyConsumption: storeData.energyConsumption,
+        carbonEmission: storeData.carbonEmission,
+        efficiencyScore: storeData.efficiencyScore,
+      };
+      console.log('Sending payload:', payload);
+      const response = await axios.post('http://127.0.0.1:5000/store', payload, { withCredentials: true });
+      if (response.data.success) {
+        setStoreResponse(`Transaction submitted: ${response.data.tx_hash}`);
+      } else {
+        setStoreResponse(`Error: ${response.data.message}`);
+      }
+    } catch (error) {
+      setStoreResponse(`Error: ${error.message}`);
+    }
   };
 
   useEffect(() => {
@@ -34,12 +68,12 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
         />
         <style>
           {`
-        body {
-          font-family: "Hanuman", serif;
-          font-weight: 400;
-          font-style: normal;
-        }
-      `}
+            body {
+              font-family: "Hanuman", serif;
+              font-weight: 400;
+              font-style: normal;
+            }
+          `}
         </style>
       </head>
       <div className="flex font-[Hanuman] bg-[#f0f9ff]">
@@ -47,9 +81,8 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
         <NavigationBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
         {/* Sidebar */}
-        {/* Sidebar Info Boxes */}
         <aside className="w-60 h-screen bg-green-50 fixed mt-[93px] left-0 border-r-4 shadow-xl hidden lg:block">
-          <div className="">
+          <div>
             <nav className="flex flex-col space-y-4 px-4">
               <button onClick={() => openModal("Overview")} className="p-4 shadow-xl hover:bg-green-100 cursor-pointer rounded">
                 Overview
@@ -70,13 +103,15 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
         {activeModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-2xl w-11/12 sm:w-2/3 lg:w-1/3 relative">
-              <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-800">✕</button>
+              <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-800">
+                ✕
+              </button>
               <h2 className="text-2xl font-semibold mb-4">{activeModal}</h2>
               <p className="text-gray-700">
                 {activeModal === "Overview" && (
                   <div>
                     <p>
-                      The website is a renewable energy monitoring platform that provides alerts based on companies' energy consumption relative to their carbon emission ratios. It aims to promote sustainable practices and support the green revolution by helping organizations optimize their energy use and reduce their environmental impact.
+                      The website is a renewable energy monitoring platform that provides alerts based on companies' energy consumption relative to their carbon emission ratios.
                     </p>
                     <Link to="/dashboard#hi">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
@@ -89,7 +124,7 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                 {activeModal === "Energy Usage" && (
                   <div>
                     <p>
-                      Details about energy usage and metrics are displayed here: Normal Consumption: less than 500 kWh; Normal Efficiency Score: less than 1 kg/KWh
+                      Details about energy usage and metrics are displayed here: Normal Consumption: less than 500 kWh; Normal Efficiency Score: less than 1 kg/KWh.
                     </p>
                     <Link to="/dashboard#energyChart">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
@@ -102,7 +137,7 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                 {activeModal === "Carbon Offset" && (
                   <div>
                     <p>
-                      Information about carbon offset initiatives and goals: Normal Range: below 0.5 kg CO₂ per kWh; Hazardous Range: Above 0.8 kg CO₂ per kWh
+                      Information about carbon offset initiatives and goals: Normal Range: below 0.5 kg CO₂ per kWh; Hazardous Range: Above 0.8 kg CO₂ per kWh.
                     </p>
                     <Link to="/dashboard#carbonOffsetChart">
                       <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600">
@@ -111,6 +146,7 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                     </Link>
                   </div>
                 )}
+
                 {activeModal === "Alerts" && (
                   <div>
                     <p>View alerts and notifications regarding energy and usage updates.</p>
@@ -121,16 +157,16 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                     </Link>
                   </div>
                 )}
-
               </p>
             </div>
           </div>
         )}
 
-
         {/* Right Side Section */}
-        <div className="ml-64 p-10 w-full">
+        <div className="ml-64 m-16 p-10 w-full">
           <h2 className="text-3xl font-semibold mb-6">Settings</h2>
+          
+          {/* Existing Settings Form Sections */}
           <form id="settingsForm" className="space-y-8 w-full">
             {/* Database Configuration Section */}
             <div className="bg-white p-6 rounded-lg shadow-md w-full">
@@ -186,16 +222,87 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                 className="border border-gray-300 rounded p-2 w-full" />
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Button for Settings */}
             <div className="flex justify-end mt-4">
               <button type="submit"
-                className="bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">Save Settings</button>
+                className="bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+                Save Settings
+              </button>
             </div>
           </form>
+
+          {/* New "Store Data" Section */}
+          <div className="bg-white p-6 rounded-lg shadow-md w-full mt-8">
+            <h3 className="text-2xl font-semibold mb-4">Store Data</h3>
+            <form onSubmit={handleStoreSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="date" className="block">Date:</label>
+                <input
+                  type="date"
+                  name="date"
+                  id="date"
+                  placeholder="Enter date"
+                  value={storeData.date}
+                  onChange={handleStoreInputChange}
+                  className="border border-gray-300 rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="energyConsumption" className="block">Energy Consumption:</label>
+                <input
+                  type="number"
+                  name="energyConsumption"
+                  id="energyConsumption"
+                  placeholder="Enter energy consumption"
+                  value={storeData.energyConsumption}
+                  onChange={handleStoreInputChange}
+                  className="border border-gray-300 rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="carbonEmission" className="block">Carbon Emission:</label>
+                <input
+                  type="number"
+                  name="carbonEmission"
+                  id="carbonEmission"
+                  placeholder="Enter carbon emission"
+                  value={storeData.carbonEmission}
+                  onChange={handleStoreInputChange}
+                  className="border border-gray-300 rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="efficiencyScore" className="block">Efficiency Score:</label>
+                <input
+                  type="number"
+                  name="efficiencyScore"
+                  id="efficiencyScore"
+                  placeholder="Enter efficiency score"
+                  value={storeData.efficiencyScore}
+                  onChange={handleStoreInputChange}
+                  className="border border-gray-300 rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div className="flex justify-end">
+                <button type="submit"
+                  className="bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+                  Submit Data
+                </button>
+              </div>
+            </form>
+            {storeResponse && (
+              <div className="mt-4 p-4 border rounded bg-gray-100">
+                {storeResponse}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
-
   );
 };
 

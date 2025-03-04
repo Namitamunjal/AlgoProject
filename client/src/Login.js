@@ -49,6 +49,15 @@ function Login({ setIsAuthenticated }) {
         password,
       }, { withCredentials: true });
       console.log(response.data);
+
+      const blockchain_response = axios.post('http://127.0.0.1:5000/login', { uid:email, password }, { withCredentials: true })
+      .then(response => {
+        console.log("Blockchian data:",response.data);
+      })
+      .catch(error => {
+        console.error("Blockchian error:",error);
+      });
+
       setSuccess('Login successful! Redirecting...');
       setError('');
 

@@ -4,6 +4,7 @@ import Chart from 'chart.js/auto';
 import { useThreshold } from './thresholdcontext';
 import { Link, useLocation } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
+import axios from 'axios';
 
 function Dashboard({ isAuthenticated, setIsAuthenticated }) {
   const location = useLocation();
@@ -87,12 +88,17 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
 
     const fetchDataAndUpdateCharts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/data');
-        const data = await response.json();
-        updateEnergyChart(data);
-        updateCarbonOffsetChart(data);
-        updateEfficiencyPieChart(data, efficiencyPieChart);
-        updateAlerts(data);
+        // const response = await fetch('http://localhost:5000/api/data');
+        // const data = await response.json();
+
+        const blockchain_response = await axios.get('http://127.0.0.1:5000/getAllData', { withCredentials: true });
+        
+        console.log("Blockchain response:", blockchain_response.data.data);
+        // console.log("DATA:",data);
+        updateEnergyChart(blockchain_response.data.data);
+        updateCarbonOffsetChart(blockchain_response.data.data);
+        updateEfficiencyPieChart(blockchain_response.data.data, efficiencyPieChart);
+        updateAlerts(blockchain_response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
