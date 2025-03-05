@@ -151,58 +151,60 @@ def login():
         print("Error in login:", str(e))
         return jsonify({"success": False, "message": str(e)}), 400
 
-# New /upload-data endpoint that processes an uploaded CSV file and calls storeData for each row.
+# New /upload-data endpoint
 @app.route('/upload-data', methods=['POST'])
 def upload_data():
+    # Ensure a file is provided
     if 'file' not in request.files:
         return jsonify({"success": False, "message": "No file part in the request"}), 400
     file = request.files['file']
     if file.filename == '':
         return jsonify({"success": False, "message": "No file selected"}), 400
 
+    # Additionally, require the active subcontract address to be provided (e.g., from the frontend)
+    subcontract_address = request.form.get('subcontract_address')
+    if not subcontract_address:
+        # Fallback to default if not provided (not recommended if users can change contracts)
+        subcontract_address = SUB_CONTRACT_ADDRESS
+
     try:
-        # Read file content and split into lines
+        # Re-instantiate the contract using the active subcontract address
+        active_sub_contract = w3.eth.contract(address=subcontract_address, abi=sub_abi)
+        
+        # Read file content and parse as CSV
         file_data = file.read().decode('utf-8').splitlines()
         csv_reader = csv.DictReader(file_data)
         tx_hashes = []
         
         # Get the starting nonce once
         nonce = w3.eth.get_transaction_count(account_address)
-        
         for row in csv_reader:
-            # Extract values from the CSV row
+            # Expect headers: date, energyConsumption, carbonEmission, efficiencyScore
             date = row.get('date')
             energy_consumption = int(float(row.get('energyConsumption')))
             carbon_emission = int(float(row.get('carbonEmission')))
             efficiency_score = int(float(row.get('efficiencyScore')))
             
-            # Estimate gas for the storeData function call
-            gas_estimate = sub_contract.functions.storeData(
+            # Estimate gas and build transaction for each row using the active contract instance
+            gas_estimate = active_sub_contract.functions.storeData(
                 date, energy_consumption, carbon_emission, efficiency_score
             ).estimateGas({'from': account_address})
             
-            # Build the transaction using the current nonce
-            tx = sub_contract.functions.storeData(
+            tx = active_sub_contract.functions.storeData(
                 date, energy_consumption, carbon_emission, efficiency_score
             ).buildTransaction({
                 'from': account_address,
                 'nonce': nonce,
-                'gas': gas_estimate + 10000,  # add buffer
+                'gas': gas_estimate + 10000,
                 'gasPrice': w3.toWei('5', 'gwei')
             })
-            nonce += 1  # Increment nonce for the next transaction
-            
-            # Sign and send the transaction
+            nonce += 1
             signed_tx = w3.eth.account.sign_transaction(tx, PRIVATE_KEY)
             tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-            
-            # Wait for transaction receipt (optional, can also run asynchronously)
             receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
             tx_hashes.append(tx_hash.hex())
-            
-            # Optional delay between transactions (if needed)
+            # Optional: add a delay if needed
             # time.sleep(1)
-            
         return jsonify({"success": True, "message": "All data stored successfully", "tx_hashes": tx_hashes})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500

@@ -65,11 +65,18 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
     }
     const formData = new FormData();
     formData.append('file', selectedFile);
+  
+    const subcontractAddress = localStorage.getItem('subcontract_address');
+    if (subcontractAddress) {
+      formData.append('subcontract_address', subcontractAddress);
+    } else {
+      setUploadResponse('No subcontract address found. Please login again.');
+      return;
+    }
+  
     try {
       const response = await axios.post('http://127.0.0.1:5000/upload-data', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true,
       });
       setUploadResponse(response.data.message);
@@ -77,7 +84,7 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
       console.error('Upload error:', error);
       setUploadResponse(error.response?.data?.message || 'File upload failed.');
     }
-  };
+  };  
 
   useEffect(() => {
     // Scroll to the top when the component mounts

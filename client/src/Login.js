@@ -58,6 +58,7 @@ function Login({ setIsAuthenticated }) {
 
       // Store the token in localStorage
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('subcontract_address', response.data.subcontract_address);
 
       setSuccess('Login successful! Redirecting...');
       setError('');
