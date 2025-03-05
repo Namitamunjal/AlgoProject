@@ -9,14 +9,20 @@ const NavigationBar = ({ isAuthenticated, setIsAuthenticated }) => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:5000/logout', { method: 'POST', credentials: 'include' });
-            if (response.ok) {
-                setIsAuthenticated(false);
-                setShowModal(false);
-                navigate('/');
-            } else {
-                console.error("Logout failed.");
-            }
+            // const response = await fetch('http://localhost:5000/logout', { method: 'POST', credentials: 'include' });
+            // if (response.ok) {
+            //     setIsAuthenticated(false);
+            //     setShowModal(false);
+            //     navigate('/');
+            // } else {
+            //     setShowModal(false);
+            //     navigate('/');
+            //     console.error("Logout failed.");
+            // }
+            localStorage.removeItem('token');
+            setIsAuthenticated(false);
+            setShowModal(false);
+            navigate('/');
         } catch (error) {
             console.error("An error occurred during logout:", error);
         }

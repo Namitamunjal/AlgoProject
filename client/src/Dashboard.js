@@ -107,6 +107,7 @@ function Dashboard({ isAuthenticated, setIsAuthenticated }) {
     function updateEnergyChart(data) {
       const energyData = data.map(item => item.energyConsumption);
       energyChart.data.datasets[0].data = energyData;
+      console.log("Energy Data:", energyData);
       energyChart.update();
     }
 

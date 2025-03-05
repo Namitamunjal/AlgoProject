@@ -10,6 +10,8 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
   const [activeModal, setActiveModal] = useState(null);
   const openModal = (modalName) => setActiveModal(modalName);
   const closeModal = () => setActiveModal(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadResponse, setUploadResponse] = useState('');
 
   // State for the store form inputs and response message
   const [storeData, setStoreData] = useState({
@@ -48,6 +50,32 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
       }
     } catch (error) {
       setStoreResponse(`Error: ${error.message}`);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleUploadSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      setUploadResponse('Please select a file first.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/upload-data', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        withCredentials: true,
+      });
+      setUploadResponse(response.data.message);
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadResponse(error.response?.data?.message || 'File upload failed.');
     }
   };
 
@@ -165,7 +193,7 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
         {/* Right Side Section */}
         <div className="ml-64 m-16 p-10 w-full">
           <h2 className="text-3xl font-semibold mb-6">Settings</h2>
-          
+
           {/* Existing Settings Form Sections */}
           <form id="settingsForm" className="space-y-8 w-full">
             {/* Database Configuration Section */}
@@ -233,7 +261,20 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
 
           {/* New "Store Data" Section */}
           <div className="bg-white p-6 rounded-lg shadow-md w-full mt-8">
-            <h3 className="text-2xl font-semibold mb-4">Store Data</h3>
+            <h2 className="text-2xl font-bold mb-2">Upload Data File</h2>
+            <form onSubmit={handleUploadSubmit} className="space-y-4">
+              <input type="file" accept=".csv,text/plain" onChange={handleFileChange} />
+              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Upload</button>
+            </form>
+
+            {/* Display file upload response below the upload form */}
+            {uploadResponse && (
+              <div className="mt-4 p-4 border rounded bg-gray-100">
+                {uploadResponse}
+              </div>
+            )}
+
+            <h3 className="text-2xl font-semibold mb-4 mt-8">Store Data</h3>
             <form onSubmit={handleStoreSubmit} className="space-y-4">
               <div>
                 <label htmlFor="date" className="block">Date:</label>
@@ -294,6 +335,8 @@ const Settings = ({ isAuthenticated, setIsAuthenticated }) => {
                 </button>
               </div>
             </form>
+
+            {/* Display store response below the store form */}
             {storeResponse && (
               <div className="mt-4 p-4 border rounded bg-gray-100">
                 {storeResponse}

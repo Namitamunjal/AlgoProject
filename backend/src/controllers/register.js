@@ -115,7 +115,7 @@ module.exports.SendOtp = async(req,res)=>{
     const mailOptions = {
         from: 'v44975757@gmail.com',
         to: user.email,
-        subject: 'StudyBuddies - veify with otp',
+        subject: 'GreenGauge - veify with otp',
         html: `<h3>Your One Time Password (OTP): ${verifyotp} </h3>
                <p>OTP is valid only for 05:00 mins. Do not share this OTP with anyone.</p>`
       

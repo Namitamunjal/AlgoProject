@@ -11,29 +11,29 @@ function Login({ setIsAuthenticated }) {
   const navigate = useNavigate();
 
   // Check authentication status on component mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/auth/check', { withCredentials: true });
-        if (response.data.isAuthenticated) {
-          setIsAuthenticated(true);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:5000/auth/check', { withCredentials: true });
+  //       if (response.data.isAuthenticated) {
+  //         setIsAuthenticated(true);
 
-          // Redirect to login-redirect page
-          navigate('/login-redirect');
+  //         // Redirect to login-redirect page
+  //         navigate('/login-redirect');
 
-          // Redirect to home after a brief delay
-          setTimeout(() => {
-            navigate('/home');
-          }, 2000); // Redirect to home after 2 seconds
+  //         // Redirect to home after a brief delay
+  //         setTimeout(() => {
+  //           navigate('/home');
+  //         }, 2000); // Redirect to home after 2 seconds
           
-        }
-      } catch (error) {
-        console.log("Not authenticated", error);
-      }
-    };
+  //       }
+  //     } catch (error) {
+  //       console.log("Not authenticated", error);
+  //     }
+  //   };
 
-    checkAuth();
-  }, [navigate, setIsAuthenticated]);
+  //   checkAuth();
+  // }, [navigate, setIsAuthenticated]);
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -44,19 +44,20 @@ function Login({ setIsAuthenticated }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/login', {
-        email,
-        password,
-      }, { withCredentials: true });
-      console.log(response.data);
+      // const response = await axios.post('http://localhost:5000/login', {
+      //   email,
+      //   password,
+      // }, { withCredentials: true });
+      // console.log(response.data);
 
-      const blockchain_response = axios.post('http://127.0.0.1:5000/login', { uid:email, password }, { withCredentials: true })
-      .then(response => {
-        console.log("Blockchian data:",response.data);
-      })
-      .catch(error => {
-        console.error("Blockchian error:",error);
-      });
+      const response = await axios.post('http://127.0.0.1:5000/login', 
+        { uid: email, password },
+        { withCredentials: true }  // optional now since we're not relying on cookies
+      );
+      console.log("Blockchain data:", response.data);
+
+      // Store the token in localStorage
+      localStorage.setItem('token', response.data.token);
 
       setSuccess('Login successful! Redirecting...');
       setError('');
